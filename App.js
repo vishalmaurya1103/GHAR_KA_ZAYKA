@@ -39,7 +39,7 @@ export default function App() {
     <NavigationContainer>
       {user ? (
         <BottomTab.Navigator>
-          <BottomTab.Screen name="Home" component={HomeScreen} />
+          <BottomTab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <BottomTab.Screen name="Search" component={SearchScreen} />
           <BottomTab.Screen name="Add Recipe" component={AddRecipe} />
           <BottomTab.Screen name="Favourite Recipe" component={FavouriteScreenn} />

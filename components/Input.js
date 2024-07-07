@@ -3,16 +3,17 @@ import { TextInput, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from '../constants/Colors';
 import { RFPercentage } from 'react-native-responsive-fontsize'; 
+
 const Input = ({ value, onChangeText, placeholder, secureTextEntry = false, autoCapitalize = 'none', keyboardType = 'default' }) => {
   return (
     <TextInput
       value={value}
       onChangeText={onChangeText}
       placeholder={placeholder}
-      placeholderTextColor={Colors.primaryWhite}
+      placeholderTextColor={Colors.primaryBlack}
       secureTextEntry={secureTextEntry}
       autoCapitalize={autoCapitalize}
-      keyboardType={keyboardType}
+      keyboardType={secureTextEntry ? 'number-pad' : keyboardType}
       style={[styles.input, { fontSize: RFPercentage(2.5) }]} 
     />
   );
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: wp('2%'),
     paddingHorizontal: wp('3%'),
     marginVertical: hp('1%'),
-    color: Colors.primaryWhite,
+    color: Colors.primaryBlack,
     fontSize: RFPercentage(2.5), 
   },
 });

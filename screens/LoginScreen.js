@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: wp('5%'),
-    backgroundColor: Colors.primaryBlack,
+    backgroundColor: Colors.primaryWhite,
   },
   img: {
     width: wp('60%'),
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   headingText: {
     fontSize: wp('8%'),
-    color: Colors.primaryWhite,
+    color: Colors.primary,
     marginVertical: hp('1%'),
   },
   formContainer: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginVertical: hp('1%'),
   },
   signupText: {
-    color: Colors.primaryWhite,
+    color: Colors.primaryBlack,
     fontSize: wp('4%'),
   },
   signupLink: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontSize: wp('4%'),
   },
   lineText: {
-    color: Colors.primaryWhite,
+    color: Colors.primaryBlack,
     fontSize: wp('4%'),
     marginVertical: hp('1%'),
   },
