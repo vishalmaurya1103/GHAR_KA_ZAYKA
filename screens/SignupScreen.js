@@ -37,7 +37,7 @@ export default function SignupScreen({ navigation }) {
       <Image style={styles.img} source={require('../assets/images/Signup.jpeg')} />
       <Text style={styles.headingText}>Sign Up</Text>
       <View style={styles.formContainer}>
-        <Input value={fullName} onChangeText={setFullName} placeholder="Full name" />
+        <Input value={fullName} onChangeText={setFullName} placeholder="Enter Name" />
         <Input value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
         <Input value={password} onChangeText={setPassword} placeholder="Enter 6 digit Password" secureTextEntry={true} />
         <Button onPress={() => signupUser(email, password, fullName)} title="SIGN UP" />

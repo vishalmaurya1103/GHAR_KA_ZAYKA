@@ -4,51 +4,88 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Colors } from '../constants/Colors';
 
-const RecipeCard = ({ image, title, readyInMinutes, veryPopular }) => (
-  <View style={styles.recipeCard}>
-    <Image source={{ uri: image }} style={styles.recipeImage} />
-    <View style={styles.recipeInfo}>
-      <Text style={styles.recipeTitle}>{title}</Text>
-      <View style={styles.recipeDetails}>
-        <Text style={styles.recipeDetail}>Time: {readyInMinutes} mins</Text>
-        <Text style={styles.recipeDetail}>Difficulty: {veryPopular ? 'Easy' : 'Medium'}</Text>
+const RecipeCard = ({ image, title, readyInMinutes, veryPopular, vegetarian, category }) => (
+  <View style={styles.cardContainer}>
+    <View style={styles.recipeCard}>
+      <Image source={{ uri: image }} style={styles.recipeImage} />
+      <View style={styles.recipeInfo}>
+        <Text style={styles.recipeTitle}>{title}</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.leftDetails}>
+            <Text style={styles.detailLabel}>Time: </Text>
+            <Text style={styles.detailText}>{`${readyInMinutes} mins`}</Text>
+          </View>
+          <View style={styles.rightDetails}>
+            <Text style={styles.detailLabel}>Type: </Text>
+            <Text style={styles.detailText}>{category}</Text>
+          </View>
+        </View>
+        <View style={styles.detailsContainer}>
+          <View style={styles.leftDetails}>
+            <Text style={styles.detailLabel}>Difficulty: </Text>
+            <Text style={styles.detailText}>{veryPopular ? 'Easy' : 'Medium'}</Text>
+          </View>
+          <View style={styles.rightDetails}>
+            <Text style={styles.detailLabel}>Diet: </Text>
+            <Text style={styles.detailText}>{vegetarian ? 'Vegetarian' : 'Non-Vegetarian'}</Text>
+          </View>
+        </View>
       </View>
     </View>
   </View>
 );
 
 const styles = StyleSheet.create({
-  recipeCard: {
-    backgroundColor: Colors.primaryWhite,
-    marginBottom: hp('2%'), 
-    borderRadius: wp('4%'), 
-    overflow: 'hidden',
-    elevation: 3,
-    shadowColor: Colors.primaryBlack,
+  cardContainer: {
+    marginBottom: hp('2%'),
+    paddingHorizontal: wp('2%'),
+    paddingTop: hp('1%'),
+    paddingBottom: hp('1%'),
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  recipeCard: {
+    backgroundColor: Colors.primaryWhite,
+    borderRadius: wp('4%'),
+    overflow: 'hidden',
   },
   recipeImage: {
     width: '100%',
-    height: hp('30%'), 
+    height: hp('30%'),
     resizeMode: 'cover',
   },
   recipeInfo: {
-    padding: wp('4%'), 
+    padding: wp('4%'),
   },
   recipeTitle: {
-    fontSize: RFPercentage(2.5), 
+    fontSize: RFPercentage(3),
     fontWeight: 'bold',
-    marginBottom: hp('1%'), 
+    marginBottom: hp('1%'),
     color: Colors.primary,
   },
-  recipeDetails: {
+  detailsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: hp('1%'),
   },
-  recipeDetail: {
+  leftDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rightDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailLabel: {
+    fontSize: RFPercentage(2),
+    color: Colors.primary,
+    fontWeight: 'bold',
+    marginRight: wp('1%'),
+  },
+  detailText: {
     fontSize: RFPercentage(2),
     color: '#555',
   },

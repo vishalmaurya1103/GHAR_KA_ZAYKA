@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import fetchRecipes from '../Backend Api/Api';
+import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import getRecipesByCategory from '../Backend Api/Api';
 import RecipeCard from '../components/RecipeCard';
+import Userinfo from "../components/Userinfo";
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
@@ -10,8 +11,10 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadRecipes = async () => {
       try {
-        const data = await fetchRecipes();
-        setRecipes(data.recipes); 
+        const categories = ['appetizer', 'main course', 'side dish', 'dessert', 'drink', 'Indian'];
+        const allRecipes = await Promise.all(categories.map(category => getRecipesByCategory(category, 10)));
+        const combinedRecipes = allRecipes.flat();
+        setRecipes(combinedRecipes);
       } catch (error) {
         console.error(error);
       } finally {
@@ -25,7 +28,7 @@ const HomeScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#67629C" />
       </View>
     );
   }
@@ -36,6 +39,8 @@ const HomeScreen = () => {
       title={item.title}
       readyInMinutes={item.readyInMinutes}
       veryPopular={item.veryPopular}
+      vegetarian={item.vegetarian}
+      category={item.category}
     />
   );
 
@@ -44,19 +49,21 @@ const HomeScreen = () => {
       data={recipes}
       renderItem={renderRecipe}
       keyExtractor={(item) => item.id.toString()}
-      contentContainerStyle={styles.flatListContainer}
+      ListHeaderComponent={<Userinfo />}
+      contentContainerStyle={styles.container}
     />
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  flatListContainer: {
-    padding: 10,
   },
 });
 
