@@ -16,7 +16,7 @@ const RecipeCard = ({ image, title, readyInMinutes, veryPopular, vegetarian, cat
             <Text style={styles.detailText}>{`${readyInMinutes} mins`}</Text>
           </View>
           <View style={styles.rightDetails}>
-            <Text style={styles.detailLabel}>Type: </Text>
+            <Text style={styles.detailLabel}>Category: </Text>
             <Text style={styles.detailText}>{category}</Text>
           </View>
         </View>
@@ -41,16 +41,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('2%'),
     paddingTop: hp('1%'),
     paddingBottom: hp('1%'),
-    shadowColor: '#000',
+    shadowColor: '#1703f3', 
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 3, 
   },
   recipeCard: {
     backgroundColor: Colors.primaryWhite,
     borderRadius: wp('4%'),
     overflow: 'hidden',
+    shadowColor: '#1703f3', 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5, 
   },
   recipeImage: {
     width: '100%',
@@ -87,7 +92,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: RFPercentage(2),
-    color: '#555',
+    color: Colors.primaryBlack,
   },
 });
 

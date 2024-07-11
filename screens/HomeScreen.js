@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import getRecipesByCategory from '../Backend Api/Api';
 import RecipeCard from '../components/RecipeCard';
 import Userinfo from "../components/Userinfo";
+import { Colors } from '../constants/Colors';
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
@@ -11,7 +12,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadRecipes = async () => {
       try {
-        const categories = ['appetizer', 'main course', 'side dish', 'dessert', 'drink', 'Indian'];
+        const categories = ['Indian' , 'breakfast' , 'lunch' , 'dinner' , 'appetizer' , 'main course', 'side dish', 'dessert', 'drink'];
         const allRecipes = await Promise.all(categories.map(category => getRecipesByCategory(category, 10)));
         const combinedRecipes = allRecipes.flat();
         setRecipes(combinedRecipes);
@@ -28,7 +29,7 @@ const HomeScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#67629C" />
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
@@ -44,11 +45,13 @@ const HomeScreen = () => {
     />
   );
 
+  const keyExtractor = (item, index) => item.id ? item.id.toString() : index.toString();
+
   return (
     <FlatList
       data={recipes}
       renderItem={renderRecipe}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={keyExtractor}
       ListHeaderComponent={<Userinfo />}
       contentContainerStyle={styles.container}
     />
@@ -58,7 +61,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.primaryWhite,
   },
   loadingContainer: {
     flex: 1,

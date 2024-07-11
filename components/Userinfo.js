@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import { firebase } from '../config/firebase'; // Assuming you have firebase config imported
+import { firebase } from '../config/firebase';
 import { Colors } from '../constants/Colors';
 
 const Userinfo = () => {
@@ -60,19 +60,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
   },
   helloText: {
-    fontSize: RFPercentage(3), 
-    color: Colors.primaryBlack,
+    fontSize: RFPercentage(3.5), 
+    color: "#fb8500",
     fontWeight: 'bold', 
     marginBottom: hp(1), 
   },
   titleText: {
-    fontSize: RFPercentage(3.5), 
+    fontSize: RFPercentage(3), 
     color: Colors.primary,
-    fontWeight: '800', 
+    fontWeight: '600', 
     marginBottom: hp(0.5), 
   },
   subtitleText: {
     fontSize: RFPercentage(3.5), 
+    color: Colors.primary,
     fontWeight: '600', 
   },
   image: {
