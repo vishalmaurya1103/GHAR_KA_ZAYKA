@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_KEY = 'e244b1ec02d0474c89fb807a7af67a01';
+const API_KEY = '3af5bd672b294f6bb3c82b4a367f0d7d';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
-const getRecipesByCategory = async (tags, number = 10) => {
+const getRecipesByCategory = async (tags, number = 50) => {
   const endpoint = `${BASE_URL}/random?number=${number}&tags=${tags}&apiKey=${API_KEY}`;
   try {
     const response = await axios.get(endpoint);

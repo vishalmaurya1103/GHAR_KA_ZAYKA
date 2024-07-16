@@ -60,19 +60,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
   },
   helloText: {
-    fontSize: RFPercentage(3.5), 
+    fontSize: RFPercentage(4), 
     color: "#fb8500",
     fontWeight: 'bold', 
     marginBottom: hp(1), 
   },
   titleText: {
-    fontSize: RFPercentage(3), 
+    fontSize: RFPercentage(3.5), 
     color: Colors.primary,
     fontWeight: '600', 
     marginBottom: hp(0.5), 
   },
   subtitleText: {
-    fontSize: RFPercentage(3.5), 
+    fontSize: RFPercentage(3), 
     color: Colors.primary,
     fontWeight: '600', 
   },

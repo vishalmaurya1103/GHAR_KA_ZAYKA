@@ -1,11 +1,19 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Colors } from '../constants/Colors';
 
-const RecipeCard = ({ image, title, readyInMinutes, veryPopular, vegetarian, category }) => (
-  <View style={styles.cardContainer}>
+const RecipeCard = ({ image, title, readyInMinutes, veryPopular, vegetarian, category, onPress }) => (
+  <Pressable 
+    onPress={onPress} 
+    style={({ pressed }) => [
+      {
+        opacity: pressed ? 0.8 : 1,
+      },
+      styles.cardContainer
+    ]}
+  >
     <View style={styles.recipeCard}>
       <Image source={{ uri: image }} style={styles.recipeImage} />
       <View style={styles.recipeInfo}>
@@ -32,7 +40,7 @@ const RecipeCard = ({ image, title, readyInMinutes, veryPopular, vegetarian, cat
         </View>
       </View>
     </View>
-  </View>
+  </Pressable>
 );
 
 const styles = StyleSheet.create({
@@ -41,21 +49,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('2%'),
     paddingTop: hp('1%'),
     paddingBottom: hp('1%'),
-    shadowColor: '#1703f3', 
+    shadowColor: '#1703f3',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 3, 
+    elevation: 3,
   },
   recipeCard: {
     backgroundColor: Colors.primaryWhite,
     borderRadius: wp('4%'),
     overflow: 'hidden',
-    shadowColor: '#1703f3', 
+    shadowColor: '#1703f3',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 5, 
+    elevation: 5,
   },
   recipeImage: {
     width: '100%',

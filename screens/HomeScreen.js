@@ -5,16 +5,19 @@ import RecipeCard from '../components/RecipeCard';
 import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadRecipes = async () => {
       try {
-        const categories = ['Indian' , 'breakfast' , 'lunch' , 'dinner' , 'appetizer' , 'main course', 'side dish', 'dessert', 'drink'];
+        const categories = ['Indian', 'breakfast', 'lunch', 'dinner', 'appetizer', 'main course', 'side dish', 'dessert', 'drink'];
         const allRecipes = await Promise.all(categories.map(category => getRecipesByCategory(category, 10)));
-        const combinedRecipes = allRecipes.flat();
+        const combinedRecipes = allRecipes.flat().map((recipe, index) => ({
+          ...recipe,
+          uniqueId: `${recipe.id}-${index}`
+        }));
         setRecipes(combinedRecipes);
       } catch (error) {
         console.error(error);
@@ -42,10 +45,11 @@ const HomeScreen = () => {
       veryPopular={item.veryPopular}
       vegetarian={item.vegetarian}
       category={item.category}
+      onPress={() => navigation.navigate('RecipeDetail', { recipe: item })} // Pass the entire recipe object
     />
   );
 
-  const keyExtractor = (item, index) => item.id ? item.id.toString() : index.toString();
+  const keyExtractor = (item) => item.uniqueId;
 
   return (
     <FlatList

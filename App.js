@@ -11,6 +11,7 @@ import SearchScreen from "./screens/SearchScreen";
 import AddRecipe from "./screens/AddRecipe";
 import FavouriteScreen from "./screens/FavouriteScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import RecipeDetail from "./screens/RecipeDetail"; 
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -19,6 +20,13 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
+const HomeStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="RecipeDetail" component={RecipeDetail} options={{ headerShown: false }} />
+  </Stack.Navigator>
+);
 
 export default function App() {
   const [initializing, setInitializing] = useState(true);
@@ -81,24 +89,27 @@ export default function App() {
               tabBarStyle: {
                 backgroundColor: Colors.primaryWhite,
                 fontWeight: "bold",
-                fontSize: RFValue(20), // Responsive font size
+                fontSize: RFValue(20),
               },
               tabBarActiveTintColor: Colors.primary,
-              tabBarInactiveTintColor: Colors.primaryBlack,
+              tabBarInactiveTintColor: Colors.primarylight,
             })}
           >
-            <BottomTab.Screen name="Recipes" component={HomeScreen}
+            <BottomTab.Screen
+              name="Recipes"
+              component={HomeStackNavigator}
               options={{
                 headerStyle: {
-                  backgroundColor: Colors.primaryWhite, 
+                  backgroundColor: Colors.primaryWhite,
                 },
-                headerTintColor: Colors.primary, 
+                headerTintColor: Colors.primary,
                 headerTitleStyle: {
-                  fontWeight: 'bold', 
-                  fontSize: RFValue(24), // Responsive font size
+                  fontWeight: "bold",
+                  fontSize: RFValue(24),
                 },
-                headerTitleAlign: 'center', 
-              }} />
+                headerTitleAlign: "center",
+              }}
+            />
             <BottomTab.Screen name="Search" component={SearchScreen} />
             <BottomTab.Screen name="Add Recipe" component={AddRecipe} />
             <BottomTab.Screen
