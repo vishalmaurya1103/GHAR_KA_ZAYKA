@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
-import getRecipesByCategory from '../Backend Api/Api';
+import { getRecipesByCategory } from '../Backend Api/Api';
 import RecipeCard from '../components/RecipeCard';
 import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
@@ -16,11 +16,11 @@ const HomeScreen = ({ navigation }) => {
         const allRecipes = await Promise.all(categories.map(category => getRecipesByCategory(category, 10)));
         const combinedRecipes = allRecipes.flat().map((recipe, index) => ({
           ...recipe,
-          uniqueId: `${recipe.id}-${index}`
+          uniqueId: `${recipe.id}-${index}` 
         }));
         setRecipes(combinedRecipes);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching recipes:', error);
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -45,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
       veryPopular={item.veryPopular}
       vegetarian={item.vegetarian}
       category={item.category}
-      onPress={() => navigation.navigate('RecipeDetail', { recipe: item })} // Pass the entire recipe object
+      onPress={() => navigation.navigate('RecipeDetail', { recipe: item })} 
     />
   );
 

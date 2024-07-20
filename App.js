@@ -23,8 +23,39 @@ const BottomTab = createBottomTabNavigator();
 
 const HomeStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="RecipeDetail" component={RecipeDetail} options={{ headerShown: false }} />
+    <Stack.Screen 
+      name="Home" 
+      component={HomeScreen} 
+      options={{ 
+        headerShown: true,
+        headerTitle: 'Recipes',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+      }} 
+    />
+    <Stack.Screen 
+      name="RecipeDetail" 
+      component={RecipeDetail}
+      options={{
+        headerShown: true,
+        headerTitle: 'Recipes Details',
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTintColor: Colors.primary,
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
   </Stack.Navigator>
 );
 
@@ -98,25 +129,25 @@ export default function App() {
             <BottomTab.Screen
               name="Recipes"
               component={HomeStackNavigator}
-              options={{
-                headerStyle: {
-                  backgroundColor: Colors.primaryWhite,
-                },
-                headerTintColor: Colors.primary,
-                headerTitleStyle: {
-                  fontWeight: "bold",
-                  fontSize: RFValue(24),
-                },
-                headerTitleAlign: "center",
-              }}
+              options={{ headerShown: false }}
             />
-            <BottomTab.Screen name="Search" component={SearchScreen} />
-            <BottomTab.Screen name="Add Recipe" component={AddRecipe} />
+            <BottomTab.Screen 
+              name="Search" 
+              component={SearchScreen} 
+              options={{ headerShown: false }} 
+            />
+            <BottomTab.Screen 
+              name="Add Recipe" 
+              component={AddRecipe} 
+            />
             <BottomTab.Screen
               name="Favourite Recipe"
               component={FavouriteScreen}
             />
-            <BottomTab.Screen name="Profile" component={ProfileScreen} />
+            <BottomTab.Screen 
+              name="Profile" 
+              component={ProfileScreen} 
+            />
           </BottomTab.Navigator>
         ) : (
           <Stack.Navigator initialRouteName="StartScreen">

@@ -8,8 +8,8 @@ const IngredientsList = ({ ingredients }) => {
   return (
     <View style={styles.container}>
       <View style={styles.recipeCard}>
-      <Text style={styles.subtitle}>Ingredients</Text>
-        {ingredients.map((ingredient, index) => (
+        <Text style={styles.subtitle}>Ingredients</Text>
+        {ingredients?.map((ingredient, index) => (
           <View key={index} style={styles.ingredientContainer}>
             <Text style={styles.bullet}>●</Text>
             <Text style={styles.ingredient}>{ingredient.original}</Text>

@@ -8,8 +8,8 @@ const InstructionsList = ({ instructions }) => {
   return (
     <View style={styles.container}>
       <View style={styles.recipeCard}>
-      <Text style={styles.subtitle}>Instructions</Text>
-        {instructions.map((step, index) => (
+        <Text style={styles.subtitle}>Instructions</Text>
+        {instructions?.map((step, index) => (
           <View key={index} style={styles.instructionContainer}>
             <Text style={styles.bullet}>●</Text>
             <Text style={styles.instruction}>{step.step}</Text>

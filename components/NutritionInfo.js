@@ -3,40 +3,37 @@ import { View, Text, StyleSheet } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from '../constants/Colors';
+
 const NutritionInfo = ({ recipe }) => {
   return (
     <View style={styles.container}>
       <View style={styles.recipeCard}>
-      <Text style={styles.subtitle}>Nutritional Information</Text>
-        {recipe.calories && (
+        <Text style={styles.subtitle}>Nutritional Information</Text>
+        {recipe?.calories && (
           <View style={styles.nutritionRow}>
             <Text style={styles.nutritionLabel}>Calories:</Text>
             <Text style={styles.nutritionValue}>{recipe.calories}</Text>
           </View>
         )}
-        {recipe.protein && (
+        {recipe?.protein && (
           <View style={styles.nutritionRow}>
             <Text style={styles.nutritionLabel}>Protein:</Text>
             <Text style={styles.nutritionValue}>{recipe.protein}g</Text>
           </View>
         )}
-        {recipe.fat && (
+        {recipe?.fat && (
           <View style={styles.nutritionRow}>
             <Text style={styles.nutritionLabel}>Fat:</Text>
             <Text style={styles.nutritionValue}>{recipe.fat}g</Text>
           </View>
         )}
-        {recipe.weightWatcherSmartPoints && (
+        {recipe?.weightWatcherSmartPoints && (
           <View style={styles.nutritionRow}>
-            <Text style={styles.nutritionLabel}>
-              Weight Watcher SmartPoints:
-            </Text>
-            <Text style={styles.nutritionValue}>
-              {recipe.weightWatcherSmartPoints}
-            </Text>
+            <Text style={styles.nutritionLabel}>Weight Watcher SmartPoints:</Text>
+            <Text style={styles.nutritionValue}>{recipe.weightWatcherSmartPoints}</Text>
           </View>
         )}
-        {recipe.healthScore && (
+        {recipe?.healthScore && (
           <View style={styles.nutritionRow}>
             <Text style={styles.nutritionLabel}>Health Score:</Text>
             <Text style={styles.nutritionValue}>{recipe.healthScore}</Text>
