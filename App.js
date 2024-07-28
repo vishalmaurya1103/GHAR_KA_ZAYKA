@@ -89,32 +89,28 @@ export default function App() {
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
                 let iconSize = focused ? RFValue(size + 5) : RFValue(size);
+                let iconVariant = focused ? "" : "-outline";
 
                 if (route.name === "Recipes") {
                   iconName = "local-dining";
+                  iconVariant = ""; // No change for Recipes tab
                 } else if (route.name === "Search") {
                   iconName = "search";
+                  iconVariant = ""; 
                 } else if (route.name === "Add Recipe") {
-                  iconName = "add-circle";
+                  iconName = `add-circle${iconVariant}`;
                 } else if (route.name === "Favourite Recipe") {
-                  iconName = "favorite";
+                  iconName = `favorite${iconVariant}`;
                 } else if (route.name === "Profile") {
-                  iconName = "person";
+                  iconName = `person${iconVariant}`;
                 }
 
                 return (
-                  <Text
-                    style={[
-                      styles.tabLabel,
-                      { fontWeight: focused ? "bold" : "normal" },
-                    ]}
-                  >
-                    <MaterialIcons
-                      name={iconName}
-                      size={iconSize}
-                      color={color}
-                    />
-                  </Text>
+                  <MaterialIcons
+                    name={iconName}
+                    size={iconSize}
+                    color={color}
+                  />
                 );
               },
               tabBarStyle: {

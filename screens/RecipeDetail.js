@@ -21,8 +21,8 @@ const RecipeDetail = ({ route , navigation }) => {
           <IconButton
             onPress={changeFavoriteStatusHandler}
             // icon={mealIsFavorite ? "star" : "star-outline"}
-            icon='star'
-            color="#67629C"
+            icon='heart'
+            color="#f50909"
             size={24}
           />
         );

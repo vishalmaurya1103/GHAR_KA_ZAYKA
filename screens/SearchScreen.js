@@ -53,6 +53,9 @@ const SearchScreen = ({ navigation }) => {
       />
       {loading && <ActivityIndicator size="large" color={Colors.primary} />}
       {error && <Text style={styles.errorText}>{error}</Text>}
+      {!loading && !error && recipes.length === 0 && search.length > 2 && (
+        <Text style={styles.noRecipesText}>No recipes found. Try another recipes</Text>
+      )}
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.id.toString()}
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.primaryWhite,
-    paddingTop: hp("6%"),  
+    paddingTop: hp("8%"),  
     paddingHorizontal: wp("4%"),  
   },
   searchText: {
@@ -87,23 +90,30 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     borderWidth: 1,
     borderRadius: wp("2%"),
-    borderTopColor: Colors.primary,
-    borderBottomColor: Colors.primary,
-    borderLeftColor: Colors.primary,
-    borderRightColor: Colors.primary,
     padding: 0,
     margin: 0,
+    shadowColor: Colors.primaryBlack,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   searchBarInputContainer: {
     backgroundColor: Colors.primaryWhite,
     borderRadius: wp("2%"),
   },
   searchBarInput: {
-    fontSize: RFPercentage(2),
+    fontSize: RFPercentage(2.2),
     color: Colors.primaryBlack,
   },
   errorText: {
     color: Colors.error,
+    fontSize: RFPercentage(2),
+    textAlign: "center",
+    marginVertical: hp("2%"),  
+  },
+  noRecipesText: {
+    color: Colors.primaryBlack,
     fontSize: RFPercentage(2),
     textAlign: "center",
     marginVertical: hp("2%"),  
