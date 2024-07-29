@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Colors } from "../constants/Colors"; 
-import { searchRecipes } from "../Backend Api/Api";
-import RecipeCard from "../components/RecipeCard"; 
+import { searchRecipes, getRecipesByCategory } from "../Backend Api/Api";
+import SearchBarComponent from "../components/SearchBarComponent";
+import RecipeListComponent from "../components/RecipeListComponent";
+import CategoryButtons from "../components/CategoryButtons";
+
+const categories = [
+  "Indian", "Beef", "Breakfast", "Lunch", "Italian", "Mexican", "Thai",
+  "Chinese", "Dinner", "Vegan", "Starter", "Vegetarian"
+];
 
 const SearchScreen = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(categories[0]); 
+
+  useEffect(() => {
+    if (search === "") {
+      fetchCategoryRecipes(activeCategory);
+    }
+  }, [activeCategory, search]);
 
   const updateSearch = async (searchText) => {
     setSearch(searchText);
@@ -33,6 +45,21 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
+  const fetchCategoryRecipes = async (category) => {
+    setActiveCategory(category);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const results = await getRecipesByCategory(category.toLowerCase());
+      setRecipes(results);
+    } catch (error) {
+      setError(error.message);
+    }
+
+    setLoading(false);
+  };
+
   const navigateToRecipeDetail = (item) => {
     navigation.navigate("RecipeDetail", { recipe: item });
   };
@@ -40,33 +67,24 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.searchText}>Search</Text>
-      <SearchBar
-        placeholder="Explore delicious recipes here..."
-        onChangeText={updateSearch}
-        value={search}
-        containerStyle={styles.searchBarContainer}
-        inputContainerStyle={styles.searchBarInputContainer}
-        inputStyle={styles.searchBarInput}
-        searchIcon={
-          <Ionicons name={"search"} size={20} color={Colors.primaryBlack} />
-        }
-      />
-      {loading && <ActivityIndicator size="large" color={Colors.primary} />}
-      {error && <Text style={styles.errorText}>{error}</Text>}
-      {!loading && !error && recipes.length === 0 && search.length > 2 && (
-        <Text style={styles.noRecipesText}>No recipes found. Try another recipes</Text>
-      )}
-      <FlatList
-        data={recipes}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <RecipeCard
-            image={item.image}
-            title={item.title}
-            category="Search Result"
-            onPress={() => navigateToRecipeDetail(item)} 
+      <SearchBarComponent search={search} updateSearch={updateSearch} />
+      {search === "" && (
+        <>
+          <Text style={styles.categoriesTitle}>Categories</Text>
+          <CategoryButtons
+            categories={categories}
+            onPressCategory={fetchCategoryRecipes}
+            activeCategory={activeCategory}
           />
-        )}
+        </>
+      )}
+      <RecipeListComponent
+        recipes={recipes}
+        loading={loading}
+        error={error}
+        search={search}
+        activeCategory={activeCategory}
+        navigateToRecipeDetail={navigateToRecipeDetail}
       />
     </View>
   );
@@ -85,38 +103,12 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginBottom: hp("2%"),  
   },
-  searchBarContainer: {
-    backgroundColor: Colors.primaryWhite,
-    borderColor: Colors.primary,
-    borderWidth: 1,
-    borderRadius: wp("2%"),
-    padding: 0,
-    margin: 0,
-    shadowColor: Colors.primaryBlack,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  searchBarInputContainer: {
-    backgroundColor: Colors.primaryWhite,
-    borderRadius: wp("2%"),
-  },
-  searchBarInput: {
-    fontSize: RFPercentage(2.2),
-    color: Colors.primaryBlack,
-  },
-  errorText: {
-    color: Colors.error,
-    fontSize: RFPercentage(2),
-    textAlign: "center",
-    marginVertical: hp("2%"),  
-  },
-  noRecipesText: {
-    color: Colors.primaryBlack,
-    fontSize: RFPercentage(2),
-    textAlign: "center",
-    marginVertical: hp("2%"),  
+  categoriesTitle: {
+    fontSize: RFPercentage(3.5),
+    fontWeight: "bold",
+    color: Colors.primary,
+    marginTop: hp("2%"),
+    marginBottom: hp("2%"),
   },
 });
 

@@ -46,16 +46,14 @@ const styles = StyleSheet.create({
   instructionContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginVertical: hp('0.5%'),
+    marginVertical: hp('1%'),
   },
   bullet: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(16),
     marginRight: wp('2%'),
-    color: '#333',
   },
   instruction: {
     fontSize: RFValue(16),
-    marginLeft: wp('2%'),
   },
 });
 

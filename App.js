@@ -15,7 +15,6 @@ import RecipeDetail from "./screens/RecipeDetail";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Text, StyleSheet } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
 const Stack = createNativeStackNavigator();
@@ -45,12 +44,45 @@ const HomeStackNavigator = () => (
       component={RecipeDetail}
       options={{
         headerShown: true,
-        headerTitle: 'Recipes Details',
+        headerTitle: 'Recipe Details',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
         headerTitleStyle: {
           fontWeight: "bold",
           fontSize: RFValue(24),
         },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const SearchStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="SearchScreen" 
+      component={SearchScreen}
+      options={{ 
+        headerShown: false
+      }} 
+    />
+    <Stack.Screen 
+      name="RecipeDetail" 
+      component={RecipeDetail}
+      options={{
+        headerTitle: 'Recipe Details',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
         headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
         headerTitleAlign: "center",
         headerBackTitle: '',
         headerBackTitleVisible: false,
@@ -72,11 +104,11 @@ export default function App() {
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    return subscriber; 
   }, []);
 
   if (initializing) {
-    return null;
+    return null; 
   }
 
   return (
@@ -88,35 +120,31 @@ export default function App() {
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
-                let iconSize = focused ? RFValue(size + 5) : RFValue(size);
-                let iconVariant = focused ? "" : "-outline";
+                const iconSize = focused ? RFValue(size + 5) : RFValue(size);
+                const iconVariant = focused ? "" : "-outline";
 
-                if (route.name === "Recipes") {
-                  iconName = "local-dining";
-                  iconVariant = ""; // No change for Recipes tab
-                } else if (route.name === "Search") {
-                  iconName = "search";
-                  iconVariant = ""; 
-                } else if (route.name === "Add Recipe") {
-                  iconName = `add-circle${iconVariant}`;
-                } else if (route.name === "Favourite Recipe") {
-                  iconName = `favorite${iconVariant}`;
-                } else if (route.name === "Profile") {
-                  iconName = `person${iconVariant}`;
+                switch (route.name) {
+                  case "Recipes":
+                    iconName = "local-dining";
+                    break;
+                  case "Search":
+                    iconName = "search";
+                    break;
+                  case "Add Recipe":
+                    iconName = `add-circle${iconVariant}`;
+                    break;
+                  case "Favourite Recipe":
+                    iconName = `favorite${iconVariant}`;
+                    break;
+                  case "Profile":
+                    iconName = `person${iconVariant}`;
+                    break;
                 }
 
-                return (
-                  <MaterialIcons
-                    name={iconName}
-                    size={iconSize}
-                    color={color}
-                  />
-                );
+                return <MaterialIcons name={iconName} size={iconSize} color={color} />;
               },
               tabBarStyle: {
                 backgroundColor: Colors.primaryWhite,
-                fontWeight: "bold",
-                fontSize: RFValue(20),
               },
               tabBarActiveTintColor: Colors.primary,
               tabBarInactiveTintColor: Colors.primarylight,
@@ -129,7 +157,7 @@ export default function App() {
             />
             <BottomTab.Screen 
               name="Search" 
-              component={SearchScreen} 
+              component={SearchStackNavigator} 
               options={{ headerShown: false }} 
             />
             <BottomTab.Screen 
@@ -168,11 +196,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  tabLabel: {
-    fontSize: RFValue(14),
-    textAlign: "center",
-    marginBottom: 3,
-  },
-});
