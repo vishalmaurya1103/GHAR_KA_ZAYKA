@@ -1,39 +1,48 @@
-import React from 'react';
-import { Text, Image, StyleSheet, ScrollView, View} from 'react-native';
-import { Colors } from '../constants/Colors';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import IngredientsList from '../components/IngredientsList';
-import InstructionsList from '../components/InstructionsList';
-import NutritionInfo from '../components/NutritionInfo';
-import RecipeInfoItem from '../components/RecipeInfoItem';
-import IconButton from '../components/IconButton';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Text, Image, StyleSheet, ScrollView, View, TouchableOpacity } from "react-native";
+import { Colors } from "../constants/Colors";
+import { RFValue } from "react-native-responsive-fontsize";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import IngredientsList from "../components/IngredientsList";
+import InstructionsList from "../components/InstructionsList";
+import NutritionInfo from "../components/NutritionInfo";
+import RecipeInfoItem from "../components/RecipeInfoItem";
+import IconButton from "../components/IconButton";
+import { useFavorites } from "../context/FavoriteContext";
 
-const RecipeDetail = ({ route , navigation }) => {
-  function changeFavoriteStatusHandler() {
-   console.log("Pressed")
-  }
+const RecipeDetail = ({ route, navigation }) => {
+  const { recipe } = route.params || {};
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(() => {
+    setIsFav(isFavorite(recipe.id));
+  }, [recipe.id, isFavorite]);
+
+  const changeFavoriteStatusHandler = () => {
+    if (isFav) {
+      removeFavorite(recipe.id);
+    } else {
+      addFavorite(recipe);
+    }
+    setIsFav(!isFav);
+  };
+
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <IconButton
-            onPress={changeFavoriteStatusHandler}
-            // icon={mealIsFavorite ? "star" : "star-outline"}
-            icon='heart'
-            color="#f50909"
-            size={24}
-          />
-        );
-      },
+      headerRight: () => (
+        <IconButton
+          onPress={changeFavoriteStatusHandler}
+          icon={isFav ? "heart" : "heart-outline"}
+          color="#f50909"
+          size={24}
+        />
+      ),
     });
-  }, [navigation, changeFavoriteStatusHandler]);
-
-  const { recipe } = route.params || {}; 
+  }, [navigation, changeFavoriteStatusHandler, isFav]);
 
   if (!recipe || Object.keys(recipe).length === 0) {
-    return <Text>Loading recipe...</Text>; 
+    return <Text>Loading recipe...</Text>;
   }
 
   return (

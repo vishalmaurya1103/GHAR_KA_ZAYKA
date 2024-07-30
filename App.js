@@ -16,6 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { RFValue } from "react-native-responsive-fontsize";
+import { FavoriteProvider } from "./context/FavoriteContext"; 
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -91,6 +92,46 @@ const SearchStackNavigator = () => (
   </Stack.Navigator>
 );
 
+const FavouriteStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="FavouriteScreen" 
+      component={FavouriteScreen} 
+      options={{ 
+        headerShown: true,
+        headerTitle: 'Favourite Recipes',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+      }} 
+    />
+    <Stack.Screen 
+      name="RecipeDetail" 
+      component={RecipeDetail}
+      options={{
+        headerTitle: 'Recipe Details',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
 export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
@@ -112,7 +153,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <FavoriteProvider>
       <StatusBar style="dark" />
       <NavigationContainer>
         {user ? (
@@ -143,6 +184,7 @@ export default function App() {
 
                 return <MaterialIcons name={iconName} size={iconSize} color={color} />;
               },
+              tabBarShowLabel: false,
               tabBarStyle: {
                 backgroundColor: Colors.primaryWhite,
               },
@@ -166,7 +208,8 @@ export default function App() {
             />
             <BottomTab.Screen
               name="Favourite Recipe"
-              component={FavouriteScreen}
+              component={FavouriteStackNavigator}
+              options={{ headerShown: false }}
             />
             <BottomTab.Screen 
               name="Profile" 
@@ -193,6 +236,6 @@ export default function App() {
           </Stack.Navigator>
         )}
       </NavigationContainer>
-    </>
+    </FavoriteProvider>
   );
 }
