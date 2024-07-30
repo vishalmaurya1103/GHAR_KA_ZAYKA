@@ -12,7 +12,7 @@ import AddRecipe from "./screens/AddRecipe";
 import FavouriteScreen from "./screens/FavouriteScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RecipeDetail from "./screens/RecipeDetail";
-import SettingsScreen from "./screens/profile screens/settings";  // Import SettingsScreen
+import SettingsScreen from "./screens/profile screens/settings";  
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -62,7 +62,7 @@ const HomeStackNavigator = () => (
     />
     <Stack.Screen 
       name="Settings" 
-      component={SettingsScreen}  // Add SettingsScreen to the stack
+      component={SettingsScreen}  
       options={{ 
         headerTitle: 'Settings',
         headerStyle: {
@@ -86,6 +86,46 @@ const SearchStackNavigator = () => (
       component={SearchScreen}
       options={{ 
         headerShown: false
+      }} 
+    />
+    <Stack.Screen 
+      name="RecipeDetail" 
+      component={RecipeDetail}
+      options={{
+        headerTitle: 'Recipe Details',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const FavouriteStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="FavouriteScreen" 
+      component={FavouriteScreen} 
+      options={{ 
+        headerShown: true,
+        headerTitle: 'Favourite Recipes',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
       }} 
     />
     <Stack.Screen 
@@ -190,8 +230,7 @@ export default function App() {
             />
             <BottomTab.Screen 
               name="Profile" 
-              component={ProfileScreenNavigator} 
-              options={{ headerShown: false }} 
+              component={ProfileScreen} 
             />
           </BottomTab.Navigator>
         ) : (
@@ -217,4 +256,3 @@ export default function App() {
     </FavoriteProvider>
   );
 }
-
