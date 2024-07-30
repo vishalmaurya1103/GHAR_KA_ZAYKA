@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = '2e5167050da04be69e210666e4e19ff9';
+const API_KEY = '9383df008ca0439ba59a26fdabe354c8';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 const getRecipesByCategory = async (tags, number = 50) => {

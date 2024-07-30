@@ -149,6 +149,36 @@ const FavouriteStackNavigator = () => (
   </Stack.Navigator>
 );
 
+const ProfileScreenNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="ProfileScreen" 
+      component={ProfileScreen}
+      options={{ 
+        headerShown: false,
+      }} 
+    />
+    <Stack.Screen 
+      name="Settings" 
+      component={SettingsScreen}
+      options={{
+        headerTitle: 'Settings',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
 export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
@@ -178,7 +208,7 @@ export default function App() {
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
-                const iconSize = focused ? RFValue(size + 5) : RFValue(size);
+                const iconSize = focused ? RFValue(size + 12) : RFValue(size + 4);
                 const iconVariant = focused ? "" : "-outline";
 
                 switch (route.name) {
@@ -230,7 +260,8 @@ export default function App() {
             />
             <BottomTab.Screen 
               name="Profile" 
-              component={ProfileScreen} 
+              component={ProfileScreenNavigator} 
+              options={{ headerShown: false }}
             />
           </BottomTab.Navigator>
         ) : (

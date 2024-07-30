@@ -12,6 +12,8 @@ import {
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { Colors } from '../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export default function ProfileScreen() {
     const [form, setForm] = useState({
@@ -42,7 +44,7 @@ export default function ProfileScreen() {
                                 // handle onPress
                             }}>
                             <View style={styles.profileAction}>
-                                <FeatherIcon color="#fff" name="edit-3" size={15} />
+                                <FeatherIcon color="#fff" name="edit-3" size={wp('4%')} />
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -79,7 +81,7 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -100,63 +102,8 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#fe9400' }]}>
-                            <FeatherIcon color="#fff" name="globe" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Language</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
-                    {/* <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                            <FeatherIcon color="#fff" name="moon" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Dark Mode</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={darkMode => setForm({ ...form, darkMode })}
-                            value={form.darkMode} />
-                    </View> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#32c759' }]}>
-                            <FeatherIcon
-                                color="#fff"
-                                name="navigation"
-                                size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Location</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
 
                     <TouchableOpacity
                         onPress={() => {
@@ -167,7 +114,7 @@ export default function ProfileScreen() {
                             <FeatherIcon
                                 color="#fff"
                                 name="settings"
-                                size={20} />
+                                size={wp('5%')} />
                         </View>
 
                         <Text style={styles.rowLabel}>Settings</Text>
@@ -177,40 +124,8 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
-
-                    {/* <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                            <FeatherIcon color="#fff" name="at-sign" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Email Notifications</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={emailNotifications =>
-                                setForm({ ...form, emailNotifications })
-                            }
-                            value={form.emailNotifications} />
-                    </View> */}
-
-                    {/* <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                            <FeatherIcon color="#fff" name="bell" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Push Notifications</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={pushNotifications =>
-                                setForm({ ...form, pushNotifications })
-                            }
-                            value={form.pushNotifications} />
-                    </View> */}
                 </View>
 
                 <View style={styles.section}>
@@ -222,7 +137,7 @@ export default function ProfileScreen() {
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
-                            <FeatherIcon color="#fff" name="flag" size={20} />
+                            <FeatherIcon color="#fff" name="flag" size={wp('5%')} />
                         </View>
 
                         <Text style={styles.rowLabel}>Help And Support</Text>
@@ -232,7 +147,7 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -241,7 +156,7 @@ export default function ProfileScreen() {
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
-                            <FeatherIcon color="#fff" name="flag" size={20} />
+                            <FeatherIcon color="#fff" name="flag" size={wp('5%')} />
                         </View>
 
                         <Text style={styles.rowLabel}>Security And Privacy</Text>
@@ -251,7 +166,7 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -260,7 +175,7 @@ export default function ProfileScreen() {
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                            <FeatherIcon color="#fff" name="mail" size={20} />
+                            <FeatherIcon color="#fff" name="mail" size={wp('5%')} />
                         </View>
 
                         <Text style={styles.rowLabel}>Contact Us</Text>
@@ -270,27 +185,9 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#32c759' }]}>
-                            <FeatherIcon color="#fff" name="star" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Rate in App Store</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
 
                     <TouchableOpacity
                         onPress={() => {
@@ -298,7 +195,7 @@ export default function ProfileScreen() {
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: Colors.primary }]}>
-                            <FeatherIcon color="#fff" name="log-out" size={20} />
+                            <FeatherIcon color="#fff" name="log-out" size={wp('5%')} />
                         </View>
 
                         <Text style={styles.rowLabel}>Log Out</Text>
@@ -308,7 +205,7 @@ export default function ProfileScreen() {
                         <FeatherIcon
                             color="#C6C6C6"
                             name="chevron-right"
-                            size={20} />
+                            size={wp('5%')} />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -319,56 +216,56 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     /** Profile */
     profile: {
-        padding: 24,
+        padding: wp('6%'),
         backgroundColor: '#fff',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
     profileAvatarWrapper: {
+        marginTop: hp('10%'),
         position: 'relative',
     },
     profileAvatar: {
-        width: 75,
-        height: 75,
-        borderRadius: 9999,
+        width: wp('20%'),
+        height: wp('20%'),
+        borderRadius: wp('50%'),
     },
     image: {
-        width: 36, // Adjust width
-        height: 36, // Adjust height
-        // borderRadius: 9999,
+        width: wp('9%'),
+        height: wp('9%'),
     },
     profileAction: {
         position: 'absolute',
-        right: -4,
-        bottom: -10,
+        right: wp('-1%'),
+        bottom: wp('-2.5%'),
         alignItems: 'center',
         justifyContent: 'center',
-        width: 28,
-        height: 28,
-        borderRadius: 9999,
+        width: wp('7%'),
+        height: wp('7%'),
+        borderRadius: wp('50%'),
         backgroundColor: '#007bff',
     },
     profileName: {
-        marginTop: 20,
-        fontSize: 19,
+        marginTop: hp('2.5%'),
+        fontSize: RFPercentage(2.4),
         fontWeight: '600',
         color: '#414d63',
         textAlign: 'center',
     },
     profileAddress: {
-        marginTop: 5,
-        fontSize: 16,
+        marginTop: hp('0.6%'),
+        fontSize: RFPercentage(2),
         color: '#989898',
         textAlign: 'center',
     },
     /** Section */
     section: {
-        paddingHorizontal: 24,
+        paddingHorizontal: wp('6%'),
     },
     sectionTitle: {
-        paddingVertical: 12,
-        fontSize: 12,
+        paddingVertical: hp('1.5%'),
+        fontSize: RFPercentage(1.6),
         fontWeight: '600',
         color: '#9e9e9e',
         textTransform: 'uppercase',
@@ -379,23 +276,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        height: 50,
+        height: hp('6.5%'),
         backgroundColor: '#f2f2f2',
-        borderRadius: 8,
-        marginBottom: 12,
-        paddingHorizontal: 12,
+        borderRadius: wp('2%'),
+        marginBottom: hp('1.5%'),
+        paddingHorizontal: wp('3%'),
     },
     rowIcon: {
-        width: 32,
-        height: 32,
-        borderRadius: 9999,
-        marginRight: 12,
+        width: wp('8%'),
+        height: wp('8%'),
+        borderRadius: wp('50%'),
+        marginRight: wp('3%'),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
     rowLabel: {
-        fontSize: 17,
+        fontSize: RFPercentage(2.2),
         fontWeight: '400',
         color: '#0c0c0c',
     },
