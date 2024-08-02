@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { firebase } from "./config/firebase";
 import StartScreen from "./screens/StartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -12,12 +11,13 @@ import AddRecipe from "./screens/AddRecipe";
 import FavouriteScreen from "./screens/FavouriteScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RecipeDetail from "./screens/RecipeDetail";
-import SettingsScreen from "./screens/profile screens/settings";  
+import SettingsScreen from "./screens/profile screens/settings";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { RFValue } from "react-native-responsive-fontsize";
-import { FavoriteProvider } from "./context/FavoriteContext"; 
+import { FavoriteProvider } from "./context/FavoriteContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -149,7 +149,7 @@ const FavouriteStackNavigator = () => (
   </Stack.Navigator>
 );
 
-const ProfileScreenNavigator = () => (
+const ProfileStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen 
       name="ProfileScreen" 
@@ -179,110 +179,118 @@ const ProfileScreenNavigator = () => (
   </Stack.Navigator>
 );
 
-export default function App() {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState(null);
+const BottomTabNavigator = () => (
+  <BottomTab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        const iconSize = focused ? RFValue(size + 12) : RFValue(size + 3);
+        const iconVariant = focused ? "" : "-outline";
 
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) {
-      setInitializing(false);
-    }
-  }
+        switch (route.name) {
+          case "Recipes":
+            iconName = "local-dining";
+            break;
+          case "Search":
+            iconName = "search";
+            break;
+          case "Add Recipe":
+            iconName = `add-circle${iconVariant}`;
+            break;
+          case "Favourite Recipe":
+            iconName = `favorite${iconVariant}`;
+            break;
+          case "Profile":
+            iconName = `person${iconVariant}`;
+            break;
+        }
+
+        return <MaterialIcons name={iconName} size={iconSize} color={color} />;
+      },
+      tabBarShowLabel: false,
+      tabBarStyle: {
+        backgroundColor: Colors.primaryWhite,
+      },
+      tabBarActiveTintColor: Colors.primary,
+      tabBarInactiveTintColor: Colors.primarylight,
+    })}
+  >
+    <BottomTab.Screen
+      name="Recipes"
+      component={HomeStackNavigator}
+      options={{ headerShown: false }}
+    />
+    <BottomTab.Screen 
+      name="Search" 
+      component={SearchStackNavigator} 
+      options={{ headerShown: false }} 
+    />
+    <BottomTab.Screen 
+      name="Add Recipe" 
+      component={AddRecipe} 
+    />
+    <BottomTab.Screen
+      name="Favourite Recipe"
+      component={FavouriteStackNavigator}
+      options={{ headerShown: false }}
+    />
+    <BottomTab.Screen 
+      name="Profile" 
+      component={ProfileStackNavigator} 
+      options={{ headerShown: false }}
+    />
+  </BottomTab.Navigator>
+);
+
+const MainAppNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="MainApp"
+      component={BottomTabNavigator}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="StartScreen"
+      component={StartScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="LoginScreen"
+      component={LoginScreen}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="SignupScreen"
+      component={SignupScreen}
+      options={{ headerShown: false }}
+    />
+  </Stack.Navigator>
+);
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; 
+    const checkUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+      setIsLoading(false);
+    };
+    checkUser();
   }, []);
 
-  if (initializing) {
+  if (isLoading) {
     return null; 
   }
 
   return (
     <FavoriteProvider>
-      <StatusBar style="dark" />
       <NavigationContainer>
-        {user ? (
-          <BottomTab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
-                const iconSize = focused ? RFValue(size + 12) : RFValue(size + 4);
-                const iconVariant = focused ? "" : "-outline";
-
-                switch (route.name) {
-                  case "Recipes":
-                    iconName = "local-dining";
-                    break;
-                  case "Search":
-                    iconName = "search";
-                    break;
-                  case "Add Recipe":
-                    iconName = `add-circle${iconVariant}`;
-                    break;
-                  case "Favourite Recipe":
-                    iconName = `favorite${iconVariant}`;
-                    break;
-                  case "Profile":
-                    iconName = `person${iconVariant}`;
-                    break;
-                }
-
-                return <MaterialIcons name={iconName} size={iconSize} color={color} />;
-              },
-              tabBarShowLabel: false,
-              tabBarStyle: {
-                backgroundColor: Colors.primaryWhite,
-              },
-              tabBarActiveTintColor: Colors.primary,
-              tabBarInactiveTintColor: Colors.primarylight,
-            })}
-          >
-            <BottomTab.Screen
-              name="Recipes"
-              component={HomeStackNavigator}
-              options={{ headerShown: false }}
-            />
-            <BottomTab.Screen 
-              name="Search" 
-              component={SearchStackNavigator} 
-              options={{ headerShown: false }} 
-            />
-            <BottomTab.Screen 
-              name="Add Recipe" 
-              component={AddRecipe} 
-            />
-            <BottomTab.Screen
-              name="Favourite Recipe"
-              component={FavouriteStackNavigator}
-              options={{ headerShown: false }}
-            />
-            <BottomTab.Screen 
-              name="Profile" 
-              component={ProfileScreenNavigator} 
-              options={{ headerShown: false }}
-            />
-          </BottomTab.Navigator>
-        ) : (
-          <Stack.Navigator initialRouteName="StartScreen">
-            <Stack.Screen
-              name="StartScreen"
-              component={StartScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LoginScreen"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignupScreen"
-              component={SignupScreen}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        )}
+        <StatusBar style="dark" />
+        <MainAppNavigator />
       </NavigationContainer>
     </FavoriteProvider>
   );

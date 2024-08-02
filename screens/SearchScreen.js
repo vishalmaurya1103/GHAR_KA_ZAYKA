@@ -9,8 +9,7 @@ import RecipeListComponent from "../components/RecipeListComponent";
 import CategoryButtons from "../components/CategoryButtons";
 
 const categories = [
-  "Indian", "Beef", "Breakfast", "Lunch", "Italian", "Mexican", "Thai",
-  "Chinese", "Dinner", "Vegan", "Starter", "Vegetarian"
+  "Indian", "French", "Italian", "Mexican", "Thai","Chinese", "American","Vegan","Breakfast","Lunch","Dinner"
 ];
 
 const SearchScreen = ({ navigation }) => {

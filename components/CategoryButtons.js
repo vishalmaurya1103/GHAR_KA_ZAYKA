@@ -5,17 +5,17 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Colors } from '../constants/Colors';
 
 const categoryImages = {
-  Indian: 'https://png.pngtree.com/png-clipart/20210917/ourmid/pngtree-indian-food-talley-curry-soup-png-image_3929141.jpg',
-  Beef: 'https://cdn-icons-png.flaticon.com/512/1592/1592613.png',
-  Breakfast: 'https://static.vecteezy.com/system/resources/previews/025/666/608/original/breakfast-outline-icon-design-illustration-food-and-drinks-symbol-on-white-background-eps-10-file-vector.jpg',
-  Lunch: 'https://thumbs.dreamstime.com/z/time-lunch-icon-vector-102812659.jpg',
-  Italian: 'https://static.vecteezy.com/system/resources/previews/021/499/554/non_2x/italian-cuisine-outline-icons-simple-stock-illustration-stock-vector.jpg',
-  Mexican: 'https://cbx-prod.b-cdn.net/COLOURBOX28615862.jpg?width=800&height=800&quality=70',
-  Thai: 'https://img.freepik.com/premium-vector/thai-food-pad-thai-illustration-top-view-concept_67394-1029.jpg',
-  Chinese: 'https://as1.ftcdn.net/v2/jpg/01/52/73/62/1000_F_152736215_YGWV7PcI5QQ0Wi8pOKbsG80ypx19jNY7.jpg',
-  Dinner: 'https://play-lh.googleusercontent.com/1CEV1hJnn8N3S9uSAQp2BDvx2TmQQIgJktRHq3sVRuSP2J1tmxmPdv9lCYAXtsHwhg=w240-h480-rw',
-  Vegan: 'https://png.pngtree.com/png-clipart/20220728/original/pngtree-vegan-food-logo-design-with-vegetables-icon-png-image_8422687.png',
-  Starter: 'https://cdn-icons-png.flaticon.com/512/362/362272.png',
+  Indian: 'https://i.pinimg.com/474x/48/ab/36/48ab36fa3806509b26c07a3cb4c041f9.jpg',
+  French: 'https://i.pinimg.com/564x/54/9b/31/549b311db80a4c9c292334aeb1468e2e.jpg',
+  Italian: 'https://i.pinimg.com/236x/73/2d/8f/732d8f710616251d3154db0ed3c1688b.jpg',
+  Mexican: 'https://i.pinimg.com/564x/db/d6/22/dbd6228fabb879fbe56c861c24d64838.jpg',
+  Thai: 'https://i.pinimg.com/564x/ba/99/97/ba9997893294defa676ced70c6eab7b9.jpg',
+  Chinese: 'https://i.pinimg.com/736x/b9/f1/91/b9f191867b07b25522420e760a9be1b9.jpg',
+  American: 'https://i.pinimg.com/736x/fb/a3/30/fba33088330c4dc14b809e6377a42a5b.jpg',
+  Vegan: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOI13BNK_LBqYaSZuGFVpgc-Vn2fXEZvPTjA&s',
+  Breakfast: 'https://media.istockphoto.com/id/1692266611/photo/grand-slam-breakfast-with-pancakes-bacon-eggs-and-toast.webp?b=1&s=170667a&w=0&k=20&c=k4uKyukbt_hx1NBLx9dW_PSr6Wh3yiQkyrVAaRyrw-M=',
+  Lunch: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0YAlVEGkVWvIPzkXK99ShyFpC31_XjYSvy64r7ppw4jcsISITzuzklHjgKw&s',
+  Dinner: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/74/ca/a3.jpg',
   Vegetarian: 'https://cbx-prod.b-cdn.net/COLOURBOX61080991.jpg?width=800&height=800&quality=70',
 };
 
