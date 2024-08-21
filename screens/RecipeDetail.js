@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, StyleSheet, ScrollView, View, TouchableOpacity } from "react-native";
+import { Text, Image, StyleSheet, ScrollView, View } from "react-native";
 import { Colors } from "../constants/Colors";
 import { RFValue } from "react-native-responsive-fontsize";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -9,6 +9,7 @@ import NutritionInfo from "../components/NutritionInfo";
 import RecipeInfoItem from "../components/RecipeInfoItem";
 import IconButton from "../components/IconButton";
 import { useFavorites } from "../context/FavoriteContext";
+import RecipeDescription from "../components/RecipeDescription";  
 
 const RecipeDetail = ({ route, navigation }) => {
   const { recipe } = route.params || {};
@@ -56,8 +57,10 @@ const RecipeDetail = ({ route, navigation }) => {
         <RecipeInfoItem icon="local-fire-department" text={recipe.veryPopular ? 'Easy' : 'Medium'} />
         <RecipeInfoItem icon="local-dining" text={recipe.vegetarian ? 'Vegetarian' : 'Non-Vegetarian'} />
         <RecipeInfoItem icon="people" text={`${recipe.servings || 0} servings`} />
-        <RecipeInfoItem icon="health-and-safety" text={`Health Score: ${recipe.healthScore || 0}`} />
+        <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} kcal`} />
       </View>
+
+      <RecipeDescription description={recipe.summary || 'No Description Available'} />
 
       <IngredientsList ingredients={recipe.extendedIngredients || []} />
       <InstructionsList instructions={recipe.analyzedInstructions?.[0]?.steps || []} />

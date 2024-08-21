@@ -226,6 +226,20 @@ const BottomTabNavigator = () => (
       options={{ headerShown: false }} 
     />
     <BottomTab.Screen 
+    options={{
+      headerTitle: 'Add Recipe',
+      headerStyle: {
+        backgroundColor: Colors.primaryWhite,
+      },
+      headerTintColor: Colors.primary,
+      headerTitleStyle: {
+        fontWeight: "bold",
+        fontSize: RFValue(24),
+      },
+      headerTitleAlign: "center",
+      headerBackTitle: '',
+      headerBackTitleVisible: false,
+    }}
       name="Add Recipe" 
       component={AddRecipe} 
     />

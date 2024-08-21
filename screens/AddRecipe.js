@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    ScrollView,
-} from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, SafeAreaView, ScrollView, Linking, Alert } from 'react-native';
+import { launchCameraAsync, launchImageLibraryAsync, useCameraPermissions, useMediaLibraryPermissions, PermissionStatus } from 'expo-image-picker';
 import { Colors } from '../constants/Colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
+import RNPickerSelect from 'react-native-picker-select';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Modal from 'react-native-modal';
 
 export default function AddRecipeScreen() {
     const [recipe, setRecipe] = useState({
@@ -24,24 +18,73 @@ export default function AddRecipeScreen() {
         category: '',
         difficulty: '',
         diet: '',
+        calories:'',
         ingredients: [''],
-        method: [''],
+        instruction: [''],
     });
 
-    const handleChoosePhoto = () => {
-        launchImageLibrary({}, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            } else {
-                const source = { uri: response.assets[0].uri };
-                setRecipe({ ...recipe, photo: source.uri });
+    const [cameraPermissionsInfo, requestCameraPermission] = useCameraPermissions();
+    const [mediaLibraryPermissionsInfo, requestMediaLibraryPermission] = useMediaLibraryPermissions();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    async function verifyPermissions(permissionType) {
+        let permissionResponse;
+        if (permissionType === 'camera') {
+            permissionResponse = await requestCameraPermission();
+        } else if (permissionType === 'mediaLibrary') {
+            permissionResponse = await requestMediaLibraryPermission();
+        }
+
+        if (permissionResponse.status === PermissionStatus.DENIED) {
+            Alert.alert(
+                `${permissionType === 'camera' ? 'Camera' : 'Library'} Permission Needed`,
+                `You need to grant ${permissionType === 'camera' ? 'camera' : 'media library'} permissions to use this feature. Please go to settings to enable ${permissionType === 'camera' ? 'camera' : 'library'} access.`,
+                [
+                    { text: 'Open Settings', onPress: () => Linking.openSettings() },
+                    { text: 'Cancel', style: 'cancel' }
+                ]
+            );
+            return false;
+        }
+
+        return permissionResponse.granted;
+    }
+
+    async function handleChoosePhoto(option) {
+        let hasPermission = false;
+
+        if (option === 'camera') {
+            hasPermission = await verifyPermissions('camera');
+        } else if (option === 'gallery') {
+            hasPermission = await verifyPermissions('mediaLibrary');
+        }
+
+        if (!hasPermission) return;
+
+        let image;
+        if (option === 'camera') {
+            image = await launchCameraAsync({
+                allowsEditing: true,
+                aspect: [16, 9],
+                quality: 0.5,
+            });
+        } else if (option === 'gallery') {
+            image = await launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [16, 9],
+                quality: 0.5,
+            });
+        }
+
+        if (image && image.assets && image.assets.length > 0) {
+            const firstAsset = image.assets[0];
+            if (firstAsset && firstAsset.uri) {
+                setRecipe({ ...recipe, photo: firstAsset.uri });
             }
-        });
-    };
+        }
+
+        setIsModalVisible(false);
+    }
 
     const handleAddIngredient = () => {
         setRecipe({ ...recipe, ingredients: [...recipe.ingredients, ''] });
@@ -54,15 +97,15 @@ export default function AddRecipeScreen() {
         setRecipe({ ...recipe, ingredients: newIngredients });
     };
 
-    const handleAddMethodStep = () => {
-        setRecipe({ ...recipe, method: [...recipe.method, ''] });
+    const handleAddInstructionStep = () => {
+        setRecipe({ ...recipe, instruction: [...recipe.instruction, ''] });
     };
 
-    const handleMethodChange = (text, index) => {
-        const newMethod = recipe.method.map((step, i) =>
+    const handleInstructionChange = (text, index) => {
+        const newInstruction = recipe.instruction.map((step, i) =>
             i === index ? text : step
         );
-        setRecipe({ ...recipe, method: newMethod });
+        setRecipe({ ...recipe, instruction: newInstruction });
     };
 
     const handleSaveRecipe = () => {
@@ -73,7 +116,7 @@ export default function AddRecipeScreen() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView contentContainerStyle={styles.container}>
-                <TouchableOpacity style={styles.photoButton} onPress={handleChoosePhoto}>
+                <TouchableOpacity style={styles.photoButton} onPress={() => setIsModalVisible(true)}>
                     {recipe.photo ? (
                         <Image source={{ uri: recipe.photo }} style={styles.photo} />
                     ) : (
@@ -83,21 +126,21 @@ export default function AddRecipeScreen() {
 
                 <TextInput
                     style={styles.input}
-                    placeholder="Title : Masala Chai"
+                    placeholder="Add Title Here : Masala Chai"
                     value={recipe.title}
                     onChangeText={(text) => setRecipe({ ...recipe, title: text })}
                 />
 
                 <TextInput
                     style={[styles.input, { height: hp('15%') }]}
-                    placeholder={"Description: \nShare a little more about the dish.\nWhat or who inspired you to cook it?\nWhat's your favourite way to eat it?"}
+                    placeholder={"Add Description for Recipe Here:"}
                     multiline
                     value={recipe.description}
                     onChangeText={(text) => setRecipe({ ...recipe, description: text })}
                 />
 
                 <View style={styles.row}>
-                    <Text style={styles.label}>Serves</Text>
+                    <Text style={styles.label}>Serves:</Text>
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="2 people"
@@ -107,7 +150,7 @@ export default function AddRecipeScreen() {
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={styles.label}>Cook Time</Text>
+                    <Text style={styles.label}>Cook Time:</Text>
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="20 mins"
@@ -117,7 +160,7 @@ export default function AddRecipeScreen() {
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={styles.label}>Category</Text>
+                    <Text style={styles.label}>Category:</Text>
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="Snacks / Breakfast"
@@ -127,27 +170,58 @@ export default function AddRecipeScreen() {
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={styles.label}>Difficulty</Text>
-                    <TextInput
-                        style={[styles.input, styles.smallInput]}
-                        placeholder="Easy / Medium / Hard"
+                    <Text style={styles.label}>Difficulty:</Text>
+                    <RNPickerSelect
+                        onValueChange={(value) => setRecipe({ ...recipe, difficulty: value })}
+                        items={[
+                            { label: 'Easy', value: 'Easy' },
+                            { label: 'Medium', value: 'Medium' },
+                            { label: 'Hard', value: 'Hard' },
+                        ]}
+                        style={{
+                            inputIOS: styles.pickerInput,
+                            inputAndroid: styles.pickerInput,
+                        }}
                         value={recipe.difficulty}
-                        onChangeText={(text) => setRecipe({ ...recipe, difficulty: text })}
+                        placeholder={{
+                            label: "Select difficulty",
+                            value: null,
+                        }}
                     />
                 </View>
 
                 <View style={styles.row}>
-                    <Text style={styles.label}>Diet</Text>
+                    <Text style={styles.label}>Diet:</Text>
+                    <RNPickerSelect
+                        onValueChange={(value) => setRecipe({ ...recipe, diet: value })}
+                        items={[
+                            { label: 'Veg', value: 'Veg' },
+                            { label: 'Non-veg', value: 'Non-veg' },
+                        ]}
+                        style={{
+                            inputIOS: styles.pickerInput,
+                            inputAndroid: styles.pickerInput,
+                        }}
+                        value={recipe.diet}
+                        placeholder={{
+                            label: "Select diet type",
+                            value: null,
+                        }}
+                    />
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.label}>Calories:</Text>
                     <TextInput
                         style={[styles.input, styles.smallInput]}
-                        placeholder="Veg / Non-veg"
-                        value={recipe.diet}
-                        onChangeText={(text) => setRecipe({ ...recipe, diet: text })}
+                        placeholder="10 kcal"
+                        value={recipe.calories}
+                        onChangeText={(text) => setRecipe({ ...recipe, calories: text })}
                     />
                 </View>
 
                 <View style={styles.ingredientsContainer}>
-                    <Text style={styles.sectionTitle}>Ingredients</Text>
+                    <Text style={styles.sectionTitle}>Ingredients:</Text>
                     {recipe.ingredients.map((ingredient, index) => (
                         <View key={index} style={styles.ingredientRow}>
                             <TextInput
@@ -167,20 +241,20 @@ export default function AddRecipeScreen() {
                     ))}
                 </View>
 
-                <View style={styles.methodContainer}>
-                    <Text style={styles.sectionTitle}>Method</Text>
-                    {recipe.method.map((step, index) => (
-                        <View key={index} style={styles.methodRow}>
+                <View style={styles.instructionContainer}>
+                    <Text style={styles.sectionTitle}>Instruction:</Text>
+                    {recipe.instruction.map((step, index) => (
+                        <View key={index} style={styles.instructionRow}>
                             <TextInput
-                                style={[styles.input, styles.methodInput]}
+                                style={[styles.input, styles.instructionInput]}
                                 placeholder={`Step ${index + 1}`}
                                 value={step}
-                                onChangeText={(text) => handleMethodChange(text, index)}
+                                onChangeText={(text) => handleInstructionChange(text, index)}
                             />
-                            {index === recipe.method.length - 1 && (
+                            {index === recipe.instruction.length - 1 && (
                                 <TouchableOpacity
                                     style={styles.addButton}
-                                    onPress={handleAddMethodStep}>
+                                    onPress={handleAddInstructionStep}>
                                     <Text style={styles.addButtonText}>+</Text>
                                 </TouchableOpacity>
                             )}
@@ -191,6 +265,19 @@ export default function AddRecipeScreen() {
                 <TouchableOpacity style={styles.saveButton} onPress={handleSaveRecipe}>
                     <Text style={styles.saveButtonText}>Save Recipe</Text>
                 </TouchableOpacity>
+
+                <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
+                    <View style={styles.modalContent}>
+                        <TouchableOpacity style={styles.modalButton} onPress={() => handleChoosePhoto('camera')}>
+                            <Icon name="camera" size={RFPercentage(3)} color={Colors.primary} />
+                            <Text style={styles.modalButtonText}>Take Photo</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.modalButton} onPress={() => handleChoosePhoto('gallery')}>
+                            <Icon name="image" size={RFPercentage(3)} color={Colors.primary} />
+                            <Text style={styles.modalButtonText}>Choose from Gallery</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
             </ScrollView>
         </SafeAreaView>
     );
@@ -228,9 +315,14 @@ const styles = StyleSheet.create({
         marginBottom: hp('2%'),
         fontSize: RFPercentage(2),
     },
-    smallInput: {
+    pickerInput: {
         width: wp('57%'),
+        height: hp('7%'),
         marginLeft: wp('1%'),
+        paddingVertical: hp('1%'),
+        borderRadius: wp('2%'),
+        backgroundColor: '#f0f0f0',
+        fontSize: RFPercentage(2),
     },
     row: {
         flexDirection: 'row',
@@ -243,6 +335,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.primary,
         marginBottom: hp('3%'),
+    },
+    smallInput: {
+        width: wp('57%'),
+        marginLeft: wp('1%'),
     },
     ingredientsContainer: {
         width: '100%',
@@ -278,16 +374,16 @@ const styles = StyleSheet.create({
         fontSize: RFPercentage(2.5),
         fontWeight: 'bold',
     },
-    methodContainer: {
+    instructionContainer: {
         width: '100%',
         marginBottom: hp('2%'),
     },
-    methodRow: {
+    instructionRow: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: hp('1%'),
     },
-    methodInput: {
+    instructionInput: {
         flex: 1,
         fontSize: RFPercentage(2),
     },
@@ -302,5 +398,21 @@ const styles = StyleSheet.create({
     saveButtonText: {
         fontSize: RFPercentage(2.5),
         color: '#fff',
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: wp('5%'),
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    modalButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: hp('2%'),
+    },
+    modalButtonText: {
+        marginLeft: wp('3%'),
+        fontSize: RFPercentage(2.5),
+        color: Colors.primary,
     },
 });
