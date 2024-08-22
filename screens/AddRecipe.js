@@ -6,7 +6,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Modal from 'react-native-modal';
+import Modal from 'react-native-modal'; 
+import 'firebase/compat/storage';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 export default function AddRecipeScreen() {
     const [recipe, setRecipe] = useState({
@@ -108,9 +110,34 @@ export default function AddRecipeScreen() {
         setRecipe({ ...recipe, instruction: newInstruction });
     };
 
-    const handleSaveRecipe = () => {
-        // Save the recipe data, e.g., send it to the server
-        console.log(recipe);
+    const handleSaveRecipe = async () => {
+        try {
+            const db = getFirestore();
+            const docRef = await addDoc(collection(db, 'recipes'), {
+                ...recipe,
+                createdAt: new Date(),
+            });
+    
+            Alert.alert("Recipe Uploaded", "Your recipe has been successfully uploaded to the GHAR_KA_ZAYKA app.");
+            console.log("Document written with ID: ", docRef.id);
+    
+            setRecipe({
+                photo: null,
+                title: '',
+                description: '',
+                servings: '',
+                cookTime: '',
+                category: '',
+                difficulty: '',
+                diet: '',
+                calories: '',
+                ingredients: [''],
+                instruction: [''],
+            });
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            Alert.alert("Error", "An error occurred while saving the recipe. Please try again.");
+        }
     };
 
     return (
@@ -127,6 +154,7 @@ export default function AddRecipeScreen() {
                 <TextInput
                     style={styles.input}
                     placeholder="Add Title Here : Masala Chai"
+                    placeholderTextColor="#bbb"
                     value={recipe.title}
                     onChangeText={(text) => setRecipe({ ...recipe, title: text })}
                 />
@@ -134,6 +162,7 @@ export default function AddRecipeScreen() {
                 <TextInput
                     style={[styles.input, { height: hp('15%') }]}
                     placeholder={"Add Description for Recipe Here:"}
+                    placeholderTextColor="#bbb"
                     multiline
                     value={recipe.description}
                     onChangeText={(text) => setRecipe({ ...recipe, description: text })}
@@ -144,7 +173,9 @@ export default function AddRecipeScreen() {
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="2 people"
+                        placeholderTextColor="#bbb"
                         value={recipe.servings}
+                        keyboardType="numeric"
                         onChangeText={(text) => setRecipe({ ...recipe, servings: text })}
                     />
                 </View>
@@ -153,7 +184,9 @@ export default function AddRecipeScreen() {
                     <Text style={styles.label}>Cook Time:</Text>
                     <TextInput
                         style={[styles.input, styles.smallInput]}
-                        placeholder="20 mins"
+                        placeholder="20 minutes"
+                        placeholderTextColor="#bbb"
+                        keyboardType="numeric"
                         value={recipe.cookTime}
                         onChangeText={(text) => setRecipe({ ...recipe, cookTime: text })}
                     />
@@ -164,6 +197,7 @@ export default function AddRecipeScreen() {
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="Snacks / Breakfast"
+                        placeholderTextColor="#bbb"
                         value={recipe.category}
                         onChangeText={(text) => setRecipe({ ...recipe, category: text })}
                     />
@@ -215,6 +249,8 @@ export default function AddRecipeScreen() {
                     <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="10 kcal"
+                        placeholderTextColor="#bbb"
+                        keyboardType="numeric"
                         value={recipe.calories}
                         onChangeText={(text) => setRecipe({ ...recipe, calories: text })}
                     />
@@ -227,6 +263,7 @@ export default function AddRecipeScreen() {
                             <TextInput
                                 style={[styles.input, styles.ingredientInput]}
                                 placeholder={`Ingredient ${index + 1}`}
+                                placeholderTextColor="#bbb"
                                 value={ingredient}
                                 onChangeText={(text) => handleIngredientChange(text, index)}
                             />
@@ -248,6 +285,7 @@ export default function AddRecipeScreen() {
                             <TextInput
                                 style={[styles.input, styles.instructionInput]}
                                 placeholder={`Step ${index + 1}`}
+                                placeholderTextColor="#bbb"
                                 value={step}
                                 onChangeText={(text) => handleInstructionChange(text, index)}
                             />
@@ -263,7 +301,7 @@ export default function AddRecipeScreen() {
                 </View>
 
                 <TouchableOpacity style={styles.saveButton} onPress={handleSaveRecipe}>
-                    <Text style={styles.saveButtonText}>Save Recipe</Text>
+                    <Text style={styles.saveButtonText}>Upload Recipe</Text>
                 </TouchableOpacity>
 
                 <Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
@@ -304,7 +342,7 @@ const styles = StyleSheet.create({
     },
     photoButtonText: {
         fontSize: RFPercentage(2.5),
-        color: '#bbb',
+        color: "#bbb",
     },
     input: {
         width: '100%',
@@ -314,15 +352,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp('4%'),
         marginBottom: hp('2%'),
         fontSize: RFPercentage(2),
+        color: Colors.primaryBlack,
     },
     pickerInput: {
-        width: wp('57%'),
+        width: wp('58%'), 
         height: hp('7%'),
-        marginLeft: wp('1%'),
-        paddingVertical: hp('1%'),
-        borderRadius: wp('2%'),
         backgroundColor: '#f0f0f0',
+        borderRadius: wp('2%'),
+        paddingHorizontal: wp('4%'), 
+        marginBottom: hp('2%'), 
         fontSize: RFPercentage(2),
+        color: Colors.primaryBlack,
+        marginLeft: wp('0%') 
     },
     row: {
         flexDirection: 'row',
