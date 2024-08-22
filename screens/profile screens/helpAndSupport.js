@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Collapsible from 'react-native-collapsible';
-
-// Get screen dimensions
-const { width } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 const HelpAndSupport = () => {
   const [faqCollapsed, setFaqCollapsed] = useState(true);
@@ -27,13 +26,11 @@ const HelpAndSupport = () => {
       </TouchableOpacity>
       <Collapsible collapsed={faqCollapsed}>
         <View style={styles.sectionContent}>
-          {/* Recipe-Related FAQs */}
           <Text style={styles.question}>How do I submit a recipe?</Text>
           <Text style={styles.answer}>You can submit a recipe by navigating to the "Submit Recipe" section in the app and filling out the necessary details.</Text>
           <Text style={styles.question}>How do I reset my password?</Text>
           <Text style={styles.answer}>Go to the account settings and click on "Reset Password". Follow the instructions provided.</Text>
           
-          {/* Account Info FAQs */}
           <Text style={styles.question}>How do I change my username?</Text>
           <Text style={styles.answer}>On the website, tap your profile image in the top right corner, click view my profile and click edit profile. On Android or iOS, tap your profile image in the top right corner, click view my profile and click the pencil icon in the top right to edit your username, email, location, bio, or change your profile picture.</Text>
           <Text style={styles.question}>How do I turn off my notifications?</Text>
@@ -43,19 +40,16 @@ const HelpAndSupport = () => {
           <Text style={styles.question}>I want to cancel or delete my account.</Text>
           <Text style={styles.answer}>You can cancel or delete your account by clicking here.</Text>
 
-          {/* Notifications FAQs */}
           <Text style={styles.question}>How do I get emails?</Text>
           <Text style={styles.answer}>If you’d like to be added to our email list, please turn on the notifications by visiting the notifications page.</Text>
           <Text style={styles.question}>How do I unsubscribe from emails?</Text>
           <Text style={styles.answer}>You can change your email and notification preferences at any time by updating your notifications page.</Text>
 
-          {/* Contact FAQs */}
           <Text style={styles.question}>How do I contact Cookpad?</Text>
           <Text style={styles.answer}>You can email us at help@cookpad.com.</Text>
         </View>
       </Collapsible>
 
-      {/* Guides and Tutorials Section */}
       <TouchableOpacity onPress={() => setGuidesCollapsed(!guidesCollapsed)} style={styles.sectionHeaderContainer}>
         <Text style={styles.sectionHeader}>{guidesCollapsed ? '▶' : '▼'} Guides and Tutorials</Text>
       </TouchableOpacity>
@@ -77,69 +71,67 @@ const HelpAndSupport = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('5%'),
   },
   title: {
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: hp('1.5%'),
   },
   subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: RFPercentage(2.2),
+    marginBottom: hp('3%'),
   },
   searchBar: {
-    height: 40,
+    height: hp('6%'),
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+    borderRadius: wp('2%'),
+    paddingLeft: wp('3%'),
+    marginBottom: hp('3%'),
   },
   sectionHeaderContainer: {
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: hp('2%'),
     backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: wp('2%'),
+    marginBottom: hp('2%'),
     flexDirection: 'row',
     alignItems: 'center',
   },
   sectionHeader: {
-    fontSize: 18,
+    fontSize: RFPercentage(2.5),
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: wp('2%'),
     flex: 1,
   },
   sectionContent: {
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: hp('1.5%'),
+    marginBottom: hp('3%'),
   },
   question: {
-    fontSize: 16,
+    fontSize: RFPercentage(2.2),
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: hp('1%'),
   },
   answer: {
-    fontSize: 14,
-    marginBottom: 15,
+    fontSize: RFPercentage(1.8),
+    marginBottom: hp('2%'),
   },
   input: {
-    height: 40,
+    height: hp('6%'),
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 20,
+    borderRadius: wp('2%'),
+    paddingLeft: wp('3%'),
+    marginBottom: hp('3%'),
   },
   textArea: {
-    height: 100,
+    height: hp('15%'),
   },
   contactOptions: {
-    marginTop: 20,
+    marginTop: hp('3%'),
   },
 });
 
 export default HelpAndSupport;
-
-

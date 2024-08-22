@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
-import { Colors } from '../../constants/Colors'; // Ensure you have Colors defined
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Colors } from '../../constants/Colors'; 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
-const { width } = Dimensions.get('window'); // Get screen width for responsiveness
-
-const DeleteAccount = () => {
+const DeleteAccount = ({ navigation }) => {
   const handleDeleteAccount = () => {
     Alert.alert(
       'Confirm Deletion',
@@ -18,8 +18,14 @@ const DeleteAccount = () => {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            // Handle account deletion logic here
-            Alert.alert('Account Deleted', 'Your account has been successfully deleted.');
+            Alert.alert('Account Deleted', 'Your account has been successfully deleted.', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  navigation.navigate('StartScreen');
+                },
+              },
+            ]);
           },
         },
       ],
@@ -55,45 +61,42 @@ const DeleteAccount = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('5%'), 
     width: '100%',
-    maxWidth: 400, // Adjust maximum width for larger screens
+    maxWidth: wp('95%'), 
     alignSelf: 'center',
   },
   title: {
-    fontSize: width < 350 ? 20 : 24, // Adjust font size based on screen width
+    fontSize: RFPercentage(3.2), 
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: hp('2%'),
   },
   subtitle: {
-    fontSize: width < 350 ? 14 : 16, // Adjust font size based on screen width
-    marginBottom: 20,
+    fontSize: RFPercentage(2.2), 
+    marginBottom: hp('3%'),
     color: 'gray',
   },
   button: {
-    height: 45,
-    backgroundColor: Colors.primary, // Red color for delete button
-    borderRadius: 20,
+    height: hp('6%'),
+    backgroundColor: Colors.primary, 
+    borderRadius: wp('5%'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
-    width: '100%', // Full width of the container
+    marginBottom: hp('3%'),
+    width: '100%', 
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: width < 350 ? 14 : 16, // Adjust font size based on screen width
+    fontSize: RFPercentage(2.2), 
     fontWeight: 'bold',
   },
   description: {
-    fontSize: width < 350 ? 12 : 14, // Adjust font size based on screen width
+    fontSize: RFPercentage(2), 
     color: 'gray',
     textAlign: 'left',
-    marginTop: 10,
-    lineHeight: width < 350 ? 18 : 20, // Adjust line height based on screen width
+    marginTop: hp('1%'),
+    lineHeight: RFPercentage(2.8), 
   },
 });
 
 export default DeleteAccount;
-
-
-

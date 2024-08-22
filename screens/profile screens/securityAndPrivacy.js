@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Collapsible from 'react-native-collapsible';
-
-// Get screen dimensions
-const { width } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 const SecurityAndPrivacy = () => {
   const [securityCollapsed, setSecurityCollapsed] = useState(true);
@@ -53,42 +52,41 @@ const SecurityAndPrivacy = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('5%'),
     flexGrow: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: hp('1.5%'),
   },
   subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: RFPercentage(2.2),
+    marginBottom: hp('3%'),
   },
   sectionHeaderContainer: {
     width: '100%',
-    paddingVertical: 10,
-    backgroundColor: '#f0f0f0', // Light background for section headers
-    borderRadius: 5,
-    marginBottom: 10,
+    paddingVertical: hp('2%'),
+    backgroundColor: '#f0f0f0', 
+    borderRadius: wp('2%'),
+    marginBottom: hp('2%'),
   },
   sectionHeader: {
-    fontSize: 18,
+    fontSize: RFPercentage(2.5),
     fontWeight: 'bold',
   },
   sectionContent: {
-    marginBottom: 20,
+    marginBottom: hp('3%'),
   },
   question: {
-    fontSize: 16,
+    fontSize: RFPercentage(2.2),
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: hp('1%'),
   },
   answer: {
-    fontSize: 14,
-    marginBottom: 15,
+    fontSize: RFPercentage(1.8),
+    marginBottom: hp('2%'),
   },
 });
 
 export default SecurityAndPrivacy;
-

@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
-import {
-    StyleSheet,
-    SafeAreaView,
-    ScrollView,
-    View,
-    Text,
-    TouchableOpacity,
-    Switch,
-    Image,
-} from 'react-native';
+import {StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, Switch} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { Colors } from '../../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export default function Settings() {
     const [form, setForm] = useState({
@@ -127,9 +120,9 @@ export default function Settings() {
                         <View style={styles.rowSpacer} />
 
                         <Switch
-                            onValueChange={pushNotifications =>
-                                setForm({ ...form, pushNotifications })}
-                            value={form.pushNotifications} />
+                            onValueChange={emailNotifications =>
+                                setForm({ ...form, emailNotifications })}
+                            value={form.emailNotifications} />
                     </View>
 
                     <TouchableOpacity
@@ -154,126 +147,44 @@ export default function Settings() {
                             size={20} />
                     </TouchableOpacity>
                 </View>
-
-                {/* <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Resources</Text> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
-                            <FeatherIcon color="#fff" name="flag" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Report Bug</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                            <FeatherIcon color="#fff" name="mail" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Contact Us</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#32c759' }]}>
-                            <FeatherIcon color="#fff" name="star" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Rate in App Store</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: Colors.primary }]}>
-                            <FeatherIcon color="#fff" name="log-out" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Log Out</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-                {/* </View> */}
             </ScrollView>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    /** Section */
     section: {
-        paddingHorizontal: 24,
+        paddingHorizontal: wp('6%'),
     },
     sectionTitle: {
-        paddingVertical: 12,
-        fontSize: 12,
+        paddingVertical: hp('1.5%'), 
+        fontSize: RFPercentage(1.6), 
         fontWeight: '600',
         color: '#9e9e9e',
         textTransform: 'uppercase',
-        letterSpacing: 1.1,
+        letterSpacing: wp('0.27%'), 
     },
-    /** Row */
     row: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        height: 50,
+        height: hp('6.5%'),
         backgroundColor: '#f2f2f2',
-        borderRadius: 8,
-        marginBottom: 12,
-        paddingHorizontal: 12,
+        borderRadius: wp('2%'), 
+        marginBottom: hp('1.5%'), 
+        paddingHorizontal: wp('3%'), 
     },
     rowIcon: {
-        width: 32,
-        height: 32,
+        width: wp('8%'), 
+        height: wp('8%'), 
         borderRadius: 9999,
-        marginRight: 12,
+        marginRight: wp('3%'), 
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
     rowLabel: {
-        fontSize: 17,
+        fontSize: RFPercentage(2.3), 
         fontWeight: '400',
         color: '#0c0c0c',
     },
@@ -283,8 +194,7 @@ const styles = StyleSheet.create({
         flexBasis: 0,
     },
     image: {
-        width: 36, // Adjust width
-        height: 36, // Adjust height
-        // borderRadius: 9999,
+        width: wp('9%'), 
+        height: wp('9%'), 
     },
 });

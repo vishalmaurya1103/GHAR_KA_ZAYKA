@@ -38,23 +38,6 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
-  const changePassword = () => {
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser) {
-      firebase
-        .auth()
-        .sendPasswordResetEmail(currentUser.email)
-        .then(() => {
-          alert('Password reset email sent to your email address');
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    } else {
-      alert('No user is currently signed in');
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={require('../assets/images/Login.jpeg')} />
@@ -72,7 +55,7 @@ export default function LoginScreen({ navigation }) {
           placeholder="Password"
           secureTextEntry={true}
         />
-        <Pressable onPress={changePassword}>
+        <Pressable>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </Pressable>
         <Button onPress={() => loginUser(email, password)} title="LOGIN" />

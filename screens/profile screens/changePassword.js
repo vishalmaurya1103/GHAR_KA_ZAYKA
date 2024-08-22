@@ -1,113 +1,59 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // Make sure to install this package
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
-
-// Get screen dimensions
-const { width } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import { firebase } from '../../config/firebase';
 
 const ChangePassword = () => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
-  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailVisible, setEmailVisible] = useState(false);
 
-  const handleChangePassword = () => {
-    if (oldPassword === '' || newPassword === '' || confirmPassword === '') {
-      Alert.alert('Error', 'All fields are required.');
+  const handlePasswordReset = async () => {
+    if (email === '') {
+      Alert.alert('Error', 'Email field is required.');
       return;
     }
 
-    if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'New password and confirmation do not match.');
-      return;
+    try {
+      await firebase.auth().sendPasswordResetEmail(email);
+      Alert.alert('Success', 'Password reset email sent to your email address.');
+      setEmail(''); // Clear the input field after sending the email
+    } catch (error) {
+      console.log('Error', error);
+      Alert.alert('Error', error.message);
     }
-
-    // Handle password change logic here
-
-    // Clear the fields after successful password change
-    setOldPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setOldPasswordVisible(false);
-    setNewPasswordVisible(false);
-    setConfirmPasswordVisible(false);
-
-    Alert.alert('Success', 'Password changed successfully.');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Change Password</Text>
-      <Text style={styles.subtitle}>Update your password for security purposes.</Text>
+      <Text style={styles.subtitle}>Enter your email to receive a password reset link.</Text>
 
-      {/* Old Password */}
-      <View style={styles.passwordContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Current Password"
-          secureTextEntry={!oldPasswordVisible}
-          value={oldPassword}
-          onChangeText={setOldPassword}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none" // Disable automatic capitalization
+          value={email}
+          onChangeText={setEmail}
         />
         <TouchableOpacity
           style={styles.visibilityButton}
-          onPress={() => setOldPasswordVisible(!oldPasswordVisible)}
+          onPress={() => setEmailVisible(!emailVisible)}
         >
           <MaterialIcons
-            name={oldPasswordVisible ? 'visibility-off' : 'visibility'}
-            size={24}
+            name={emailVisible ? 'visibility-off' : 'visibility'}
+            size={RFPercentage(3)}
             color="gray"
           />
         </TouchableOpacity>
       </View>
 
-      {/* New Password */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="New Password"
-          secureTextEntry={!newPasswordVisible}
-          value={newPassword}
-          onChangeText={setNewPassword}
-        />
-        <TouchableOpacity
-          style={styles.visibilityButton}
-          onPress={() => setNewPasswordVisible(!newPasswordVisible)}
-        >
-          <MaterialIcons
-            name={newPasswordVisible ? 'visibility-off' : 'visibility'}
-            size={24}
-            color="gray"
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* Confirm New Password */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm New Password"
-          secureTextEntry={!confirmPasswordVisible}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
-        <TouchableOpacity
-          style={styles.visibilityButton}
-          onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-        >
-          <MaterialIcons
-            name={confirmPasswordVisible ? 'visibility-off' : 'visibility'}
-            size={24}
-            color="gray"
-          />
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-        <Text style={styles.buttonText}>Change Password</Text>
+      <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
+        <Text style={styles.buttonText}>Send Reset Email</Text>
       </TouchableOpacity>
     </View>
   );
@@ -115,59 +61,54 @@ const ChangePassword = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
-    maxWidth: '98%', // Adjust width based on screen size
+    maxWidth: wp('98%'),
     alignSelf: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: hp('2%'),
   },
   subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: RFPercentage(2.5),
+    marginBottom: hp('3%'),
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginBottom: 15,
-    flex: 1,
-  },
-  passwordContainer: {
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
-    position: 'relative', // Added to enable absolute positioning for the button
+    marginBottom: hp('2%'),
+    position: 'relative',
+  },
+  input: {
+    height: hp('5.5%'),
+    fontSize: RFPercentage(2),
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: wp('2%'),
+    paddingLeft: wp('3%'),
+    marginBottom: hp('2%'),
+    flex: 1,
   },
   visibilityButton: {
     position: 'absolute',
-    right: 10,
+    right: wp('3%'),
     top: '50%',
-    transform: [{ translateY: -20 }], // Centers the button vertically
+    transform: [{ translateY: -hp('2.75%') }],
   },
   button: {
-    height: 45,
-    backgroundColor: Colors.primary, // Darker blue for contact buttons
-    borderRadius: 20,
+    height: hp('6%'),
+    backgroundColor: Colors.primary,
+    borderRadius: wp('5%'),
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: RFPercentage(2.5),
     fontWeight: 'bold',
   },
 });
 
 export default ChangePassword;
-
-
-
-
-
-

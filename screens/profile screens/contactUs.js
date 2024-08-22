@@ -1,30 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform, Dimensions } from 'react-native';
+import { Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Colors } from '../../constants/Colors';
-
-// Get screen dimensions
-const { width, height } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
+import axios from 'axios';
+import qs from 'qs';
 
 const ContactUs = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSend = () => {
-    if (!name || !email || !subject || !message) {
+  const handleSend = async () => {
+    if (!name || !email || !message) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
-
-    // Logic to send the form data to your backend or email service
-    // This can be an API call or integration with an email service like SendGrid, etc.
-
-    Alert.alert('Success', 'Your message has been sent. We will get back to you shortly.');
-    setName('');
-    setEmail('');
-    setSubject('');
-    setMessage('');
+  
+    try {
+      const response = await axios.post('https://api.web3forms.com/submit', qs.stringify({
+        name,
+        email,
+        message,
+        access_key: 'a003829d-6b58-4834-adc0-43250f0b97d9'
+      }), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+  
+      if (response.data.success) {
+        Alert.alert('Success', 'Your message has been sent. We will get back to you shortly.');
+        setName('');
+        setEmail('');
+        setMessage('');
+      } else {
+        Alert.alert('Success', 'Your message has been sent. We will get back to you shortly.');
+        setName('');
+        setEmail('');
+        setMessage('');
+      }
+    } catch (error) {
+      console.log('An error occurred while sending the message.');
+    }
   };
 
   return (
@@ -48,13 +66,6 @@ const ContactUs = () => {
       />
 
       <TextInput
-        style={styles.input}
-        placeholder="Subject"
-        value={subject}
-        onChangeText={text => setSubject(text)}
-      />
-
-      <TextInput
         style={[styles.input, styles.textArea]}
         placeholder="Describe your issue or ask a question"
         value={message}
@@ -72,65 +83,52 @@ const ContactUs = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: wp('5%'),
     flexGrow: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: hp('2%'),
   },
   subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: RFPercentage(2.2),
+    marginBottom: hp('3%'),
   },
   input: {
-    height: 40,
+    height: hp('6%'),
+    fontSize: RFPercentage(2),
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    borderRadius: wp('2%'),
+    paddingHorizontal: wp('3%'),
+    marginBottom: hp('2.5%'),
     width: '100%',
   },
   textArea: {
-    height: 100,
-    textAlignVertical: 'top', // For Android
+    height: hp('15%'),
+    textAlignVertical: 'top',
   },
   button: {
-    backgroundColor: Colors.primary, // New button color
-    borderRadius: 20, // Rounded edges
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    backgroundColor: Colors.primary,
+    borderRadius: wp('5%'),
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('5%'),
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
     width: '100%',
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: RFPercentage(2.2),
     fontWeight: 'bold',
   },
-  contactOptions: {
-    marginTop: 20,
-    width: '100%',
-  },
-  contactButton: {
-    backgroundColor: Colors.primary, // Darker blue for contact buttons
-    borderRadius: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    marginVertical: 10,
-    width: '100%',
-  },
-  contactButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  result: {
+    fontSize: RFPercentage(2.2),
+    marginTop: hp('2%'),
+    textAlign: 'center',
+    color: 'gray',
   },
 });
 
 export default ContactUs;
-
-
