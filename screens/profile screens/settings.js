@@ -28,35 +28,13 @@ export default function Settings() {
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Preferences</Text>
 
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#eeeeef' }]}>
-                            <Image source={require("../../assets/images/account.png")}
-                                style={styles.image}
-                            />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Profile</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
-
                     <TouchableOpacity
                         onPress={() => {
-                            // handle onPress
+                            navigation.navigate('ChangePassword')
                         }}
                         style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#fe9400' }]}>
-                            <FeatherIcon color="#fff" name="globe" size={20} />
+                        <View style={[styles.rowIcon, { backgroundColor: Colors.primary }]}>
+                            <FeatherIcon color="#fff" name="key" size={20} />
                         </View>
 
                         <Text style={styles.rowLabel}>Change Password</Text>
@@ -124,28 +102,6 @@ export default function Settings() {
                             size={20} />
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('Settings');
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: Colors.primary }]}>
-                            <FeatherIcon
-                                color="#fff"
-                                name="settings"
-                                size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Settings</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity> */}
-
                     <View style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
                             <FeatherIcon color="#fff" name="bell" size={20} />
@@ -178,7 +134,7 @@ export default function Settings() {
 
                     <TouchableOpacity
                         onPress={() => {
-                            // navigation.navigate('Settings');
+                            navigation.navigate('DeleteAccount');
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: Colors.primary }]}>
@@ -199,10 +155,10 @@ export default function Settings() {
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Resources</Text>
+                {/* <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Resources</Text> */}
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => {
                             // handle onPress
                         }}
@@ -219,7 +175,7 @@ export default function Settings() {
                             color="#C6C6C6"
                             name="chevron-right"
                             size={20} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     {/* <TouchableOpacity
                         onPress={() => {
@@ -259,7 +215,7 @@ export default function Settings() {
                             size={20} />
                     </TouchableOpacity> */}
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => {
                             // handle onPress
                         }}
@@ -276,8 +232,8 @@ export default function Settings() {
                             color="#C6C6C6"
                             name="chevron-right"
                             size={20} />
-                    </TouchableOpacity>
-                </View>
+                    </TouchableOpacity> */}
+                {/* </View> */}
             </ScrollView>
         </SafeAreaView>
     );

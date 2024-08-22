@@ -147,11 +147,13 @@ export default function ProfileScreen() {
 
                     <TouchableOpacity
                         onPress={() => {
-                            // handle onPress
+                            navigation.navigate('HelpAndSupport');
                         }}
                         style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
-                            <FeatherIcon color="#fff" name="flag" size={wp('5%')} />
+                        <View style={[styles.rowIcon, { backgroundColor: '#eeeeef' }]}>
+                        <Image source={require("../assets/images/help.png")}
+                                style={styles.image}
+                            />
                         </View>
 
                         <Text style={styles.rowLabel}>Help And Support</Text>
@@ -166,7 +168,7 @@ export default function ProfileScreen() {
 
                     <TouchableOpacity
                         onPress={() => {
-                            // handle onPress
+                            navigation.navigate('SecurityAndPrivacy');
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
@@ -185,7 +187,7 @@ export default function ProfileScreen() {
 
                     <TouchableOpacity
                         onPress={() => {
-                            // handle onPress
+                            navigation.navigate('ContactUs');
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>

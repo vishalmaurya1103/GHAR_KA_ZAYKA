@@ -12,6 +12,11 @@ import FavouriteScreen from "./screens/FavouriteScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RecipeDetail from "./screens/RecipeDetail";
 import SettingsScreen from "./screens/profile screens/settings";
+import HelpAndSupport from "./screens/profile screens/helpAndSupport";
+import SecurityAndPrivacy from "./screens/profile screens/securityAndPrivacy";
+import ContactUs from "./screens/profile screens/contactUs";
+import ChangePassword from "./screens/profile screens/changePassword";
+import DeleteAccount from "./screens/profile screens/deleteAccount";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -163,6 +168,96 @@ const ProfileStackNavigator = () => (
       component={SettingsScreen}
       options={{
         headerTitle: 'Settings',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+     <Stack.Screen 
+      name="ChangePassword" 
+      component={ChangePassword}
+      options={{
+        headerTitle: 'Change Password',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+    <Stack.Screen 
+      name="DeleteAccount" 
+      component={DeleteAccount}
+      options={{
+        headerTitle: 'Delete Account',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+    <Stack.Screen 
+      name="HelpAndSupport" 
+      component={HelpAndSupport}
+      options={{
+        headerTitle: 'Help And Support',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+    <Stack.Screen 
+      name="SecurityAndPrivacy" 
+      component={SecurityAndPrivacy}
+      options={{
+        headerTitle: 'Security And Privacy',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: "center",
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+    <Stack.Screen 
+      name="ContactUs" 
+      component={ContactUs}
+      options={{
+        headerTitle: 'Contact Us',
         headerStyle: {
           backgroundColor: Colors.primaryWhite,
         },
