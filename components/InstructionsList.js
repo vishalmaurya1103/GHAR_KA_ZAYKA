@@ -12,7 +12,7 @@ const InstructionsList = ({ instructions }) => {
         {instructions?.map((step, index) => (
           <View key={index} style={styles.instructionContainer}>
             <Text style={styles.bullet}>●</Text>
-            <Text style={styles.instruction}>{step.step}</Text>
+            <Text style={styles.instruction}>{step.step || step}</Text>
           </View>
         ))}
       </View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginVertical: hp('1%'),
   },
   bullet: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(12),
     marginRight: wp('2%'),
   },
   instruction: {

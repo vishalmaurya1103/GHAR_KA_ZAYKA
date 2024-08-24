@@ -1,41 +1,51 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Pressable, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { auth, signInWithEmailAndPassword, db } from '../config/firebase';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from '../constants/Colors';
-import { firebase } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function onPressHandler() {
-    navigation.navigate('SignupScreen');
-  }
-
-  const loginUser = async (email, password) => {
+  const loginUser = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter all fields');
+      return;
+    }
+    setLoading(true);
     try {
-      const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const uid = userCredential.user.uid;
 
-      const userDoc = await firebase.firestore().collection('users').doc(uid).get();
-      if (userDoc.exists) {
+      const userDocRef = doc(db, 'users', uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
         const userData = userDoc.data();
         await AsyncStorage.setItem('user', JSON.stringify(userCredential.user));
-        await AsyncStorage.setItem('userName', userData.fullName); 
+        await AsyncStorage.setItem('userName', userData.fullName);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MainApp' }],
+        });
       } else {
-        console.log('No such document!');
+        Alert.alert('Error', 'No user data found');
       }
-
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'MainApp' }], 
-      });
-    } catch (err) {
-      alert(err.message);
+    } catch (error) {
+      Alert.alert('Login Error', error.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const onSignUpPress = () => {
+    navigation.navigate('SignupScreen');
   };
 
   return (
@@ -58,11 +68,11 @@ export default function LoginScreen({ navigation }) {
         <Pressable>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </Pressable>
-        <Button onPress={() => loginUser(email, password)} title="LOGIN" />
+        <Button onPress={loginUser} title={loading ? <ActivityIndicator color="#fff" /> : 'LOGIN'} />
       </View>
       <View style={styles.signupContainer}>
         <Text style={styles.signupText}>Don't have an account? </Text>
-        <Pressable onPress={onPressHandler}>
+        <Pressable onPress={onSignUpPress}>
           <Text style={styles.signupLink}>Sign Up</Text>
         </Pressable>
       </View>

@@ -48,22 +48,22 @@ const RecipeDetail = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: recipe.image || '' }} style={styles.image} />
+      <Image source={{ uri: recipe.photo || recipe.image || '' }} style={styles.image} />
       <Text style={styles.title}>{recipe.title || 'No Title'}</Text>
 
       <View style={styles.infoGrid}>
-        <RecipeInfoItem icon="watch-later" text={`${recipe.readyInMinutes || 0} mins`} />
+        <RecipeInfoItem icon="watch-later" text={`${recipe.cookTime || recipe.readyInMinutes || 0} mins`} />
         <RecipeInfoItem icon="category" text={recipe.category || 'Unknown'} />
-        <RecipeInfoItem icon="local-fire-department" text={recipe.veryPopular ? 'Easy' : 'Medium'} />
-        <RecipeInfoItem icon="local-dining" text={recipe.vegetarian ? 'Vegetarian' : 'Non-Vegetarian'} />
+        <RecipeInfoItem icon="local-fire-department" text={recipe.difficulty || 'Medium'} />
+        <RecipeInfoItem icon="local-dining" text={recipe.diet || 'Non-Vegetarian'} />
         <RecipeInfoItem icon="people" text={`${recipe.servings || 0} servings`} />
         <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} kcal`} />
       </View>
 
-      <RecipeDescription description={recipe.summary || 'No Description Available'} />
+      <RecipeDescription description={recipe.description || recipe.summary || 'No Description Available'} />
 
-      <IngredientsList ingredients={recipe.extendedIngredients || []} />
-      <InstructionsList instructions={recipe.analyzedInstructions?.[0]?.steps || []} />
+      <IngredientsList ingredients={recipe.ingredients || recipe.extendedIngredients || []} />
+      <InstructionsList instructions={recipe.instruction || recipe.analyzedInstructions?.[0]?.steps || []} />
       <NutritionInfo recipe={recipe} />
 
       <View style={{ marginBottom: hp('5%') }} />

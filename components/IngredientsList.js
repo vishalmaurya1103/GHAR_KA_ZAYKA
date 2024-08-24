@@ -12,7 +12,7 @@ const IngredientsList = ({ ingredients }) => {
         {ingredients?.map((ingredient, index) => (
           <View key={index} style={styles.ingredientContainer}>
             <Text style={styles.bullet}>●</Text>
-            <Text style={styles.ingredient}>{ingredient.original}</Text>
+            <Text style={styles.ingredient}>{ingredient.original || ingredient}</Text>
           </View>
         ))}
       </View>

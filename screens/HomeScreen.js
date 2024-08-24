@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
-import { getRecipesByCategory } from '../Backend Api/Api';
+import { getRecipesByCategory, fetchRecipesFromFirebase } from '../Backend Api/Api';
 import RecipeCard from '../components/RecipeCard';
 import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
+
+const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
 
 const HomeScreen = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
@@ -13,11 +15,40 @@ const HomeScreen = ({ navigation }) => {
     const loadRecipes = async () => {
       try {
         const categories = ['Indian', 'breakfast', 'lunch', 'dinner', 'appetizer', 'main course', 'side dish', 'dessert', 'drink'];
-        const allRecipes = await Promise.all(categories.map(category => getRecipesByCategory(category, 10)));
-        const combinedRecipes = allRecipes.flat().map((recipe, index) => ({
-          ...recipe,
-          uniqueId: `${recipe.id}-${index}` 
-        }));
+        const [apiRecipes, firebaseRecipes] = await Promise.all([
+          Promise.all(categories.map(category => getRecipesByCategory(category, 10))),
+          fetchRecipesFromFirebase()
+        ]);
+
+        const combinedRecipes = [
+          ...apiRecipes.flat(),
+          ...firebaseRecipes
+        ].map((recipe, index) => {
+          let imageUrl = recipe.photo || recipe.image;
+
+          if (isFirebaseImageUrl(imageUrl)) {
+            imageUrl = imageUrl;
+          } else if (!imageUrl) {
+            imageUrl = null;
+          } 
+
+          const cookTimeFromApi = parseInt(recipe.readyInMinutes, 10);
+          const cookTimeFromFirebase = parseInt(recipe.cookTime, 10);
+
+          const cookTime = (!isNaN(cookTimeFromApi) && cookTimeFromApi > 0) ? cookTimeFromApi : 
+                            (!isNaN(cookTimeFromFirebase) && cookTimeFromFirebase > 0) ? cookTimeFromFirebase : 
+                            0;
+
+          return {
+            ...recipe,
+            image: imageUrl,
+            cookTime: cookTime,
+            servings: parseInt(recipe.servings, 10) || 0,
+            calories: parseInt(recipe.calories, 10) || 0,
+            uniqueId: `${recipe.id}-${index}`
+          };
+        });
+
         setRecipes(combinedRecipes);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -25,7 +56,6 @@ const HomeScreen = ({ navigation }) => {
         setLoading(false);
       }
     };
-
     loadRecipes();
   }, []);
 
@@ -41,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
     <RecipeCard 
       image={item.image}
       title={item.title}
-      readyInMinutes={item.readyInMinutes}
+      readyInMinutes={item.cookTime}
       veryPopular={item.veryPopular}
       vegetarian={item.vegetarian}
       category={item.category}
