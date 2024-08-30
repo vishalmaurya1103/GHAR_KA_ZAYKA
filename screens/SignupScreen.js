@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Pressable, StyleSheet } from 'react-native';
+import { Image, View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from '../constants/Colors';
-import { firebase } from '../config/firebase';
+import { auth, db, createUserWithEmailAndPassword, signOut } from '../config/firebase';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { doc, setDoc } from 'firebase/firestore';
+import { sendEmailVerification } from 'firebase/auth';
 
 export default function SignupScreen({ navigation }) {
   const [fullName, setFullName] = useState('');
@@ -15,20 +17,36 @@ export default function SignupScreen({ navigation }) {
     navigation.navigate('LoginScreen');
   }
 
-  const signupUser = async (email, password, fullName) => {
+  const signupUser = async () => {
+    if (!email || !password || !fullName) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      await firebase.auth().currentUser.sendEmailVerification({
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await sendEmailVerification(user, {
         handleCodeInApp: true,
-        url: 'gahre-ka-zayka-login.firebaseapp.com',
+        url: 'http://gahre-ka-zayka-login.firebaseapp.com/finishSignUp?cartId=1234', // Update URL to your app’s URL
       });
-      alert('Verification email sent');
-      await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({
+      Alert.alert('Verification email sent', 'Please check your inbox.');
+
+      await setDoc(doc(db, 'users', user.uid), {
         fullName,
         email,
       });
+
+      await signOut(auth);
+
+      setTimeout(() => {
+        navigation.navigate('LoginScreen');
+      }, 5000); 
+
     } catch (error) {
-      alert(error.message);
+      Alert.alert('Signup Error', error.message);
+      console.log(error.message);
     }
   };
 
@@ -37,10 +55,10 @@ export default function SignupScreen({ navigation }) {
       <Image style={styles.img} source={require('../assets/images/Signup.jpeg')} />
       <Text style={styles.headingText}>Sign Up</Text>
       <View style={styles.formContainer}>
-        <Input value={fullName} onChangeText={setFullName} placeholder="Enter Name" />
+        <Input value={fullName} onChangeText={setFullName} placeholder="Enter First Name" />
         <Input value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
         <Input value={password} onChangeText={setPassword} placeholder="Enter 6 digit Password" secureTextEntry={true} />
-        <Button onPress={() => signupUser(email, password, fullName)} title="SIGN UP" />
+        <Button onPress={signupUser} title="SIGN UP" />
       </View>
       <View style={styles.signupContainer}>
         <Text style={styles.signupText}>Already have an account? </Text>

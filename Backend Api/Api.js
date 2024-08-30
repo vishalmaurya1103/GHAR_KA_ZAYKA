@@ -5,6 +5,11 @@ import { db } from '../config/firebase';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 const API_KEYS = [
+  'f2186ded718c4b3287c6c764535fabd0',
+  'db46a0798ead4fac94ae8d1b13ed264a',
+  '1ca781b35f2c49698f68f6f79c5b54ad',
+  '8d72c12c766541a7a4bd2f4b2b84307e',
+  '42e0b39d16a648479979318fdccf1a64',
   '2e5167050da04be69e210666e4e19ff9',
   '0b024b0ad8484fe79d4b9882e32e8e2c',
   '9383df008ca0439ba59a26fdabe354c8',
@@ -24,6 +29,13 @@ const switchApiKey = () => {
 };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const exponentialBackoff = async (retries, baseDelay = 1000, jitter = true) => {
+  if (retries === 0) throw new Error('Max retries reached');
+  const delayTime = baseDelay * Math.pow(2, 3 - retries);
+  const finalDelay = jitter ? delayTime + Math.random() * baseDelay : delayTime;
+  await delay(finalDelay);
+};
 
 const fetchRecipesFromFirebase = async () => {
   try {
@@ -47,13 +59,11 @@ const getRecipesByCategory = async (tags, number = 50, retries = 3) => {
   } catch (error) {
     if (error.response && error.response.status === 402) {
       switchApiKey();
-      if (retries > 0) {
-        await delay(1000); 
-        return getRecipesByCategory(tags, number, retries - 1); 
-      } else {
-        console.error('Max retries reached. Could not fetch recipes.');
-        return [];
-      }
+      await exponentialBackoff(retries);
+      return getRecipesByCategory(tags, number, retries - 1);
+    } else if (retries > 1) {
+      await exponentialBackoff(retries);
+      return getRecipesByCategory(tags, number, retries - 1);
     } else {
       console.error(`Error fetching ${tags} recipes:`, error);
       return [];
@@ -83,13 +93,11 @@ const searchRecipes = async (query, retries = 3) => {
   } catch (error) {
     if (error.response && error.response.status === 402) {
       switchApiKey();
-      if (retries > 0) {
-        await delay(1000); 
-        return searchRecipes(query, retries - 1); 
-      } else {
-        console.error('Max retries reached. Could not search recipes.');
-        return [];
-      }
+      await exponentialBackoff(retries);
+      return searchRecipes(query, retries - 1);
+    } else if (retries > 1) {
+      await exponentialBackoff(retries);
+      return searchRecipes(query, retries - 1);
     } else {
       console.error(`Error searching recipes for "${query}":`, error);
       return [];
@@ -126,13 +134,11 @@ const getRecipeDetails = async (recipeId, retries = 3) => {
   } catch (error) {
     if (error.response && error.response.status === 402) {
       switchApiKey();
-      if (retries > 0) {
-        await delay(1000); 
-        return getRecipeDetails(recipeId, retries - 1); 
-      } else {
-        console.error('Max retries reached. Could not fetch recipe details.');
-        return {};
-      }
+      await exponentialBackoff(retries);
+      return getRecipeDetails(recipeId, retries - 1);
+    } else if (retries > 1) {
+      await exponentialBackoff(retries);
+      return getRecipeDetails(recipeId, retries - 1);
     } else {
       console.error(`Error fetching recipe details for ID ${recipeId}:`, error);
       return {};

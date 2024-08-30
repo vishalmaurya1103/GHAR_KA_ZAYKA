@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { auth, signOut } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , CommonActions } from '@react-navigation/native';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ export default function ProfileScreen() {
       await signOut(auth);
       await AsyncStorage.removeItem('user');
       await AsyncStorage.removeItem('userName');
-      navigation.reset({
+      CommonActions.reset({
         index: 0,
         routes: [{ name: 'StartScreen' }],
       });

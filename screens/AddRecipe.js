@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal'; 
 import 'firebase/compat/storage';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function AddRecipeScreen() {
     const [recipe, setRecipe] = useState({
@@ -110,11 +111,29 @@ export default function AddRecipeScreen() {
         setRecipe({ ...recipe, instruction: newInstruction });
     };
 
+    async function uploadImage(uri) {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        const storage = getStorage();
+        const storageRef = ref(storage, `images/${Date.now()}.jpg`);
+        
+        await uploadBytes(storageRef, blob);
+        const url = await getDownloadURL(storageRef);
+        
+        return url;
+    }
+    
     const handleSaveRecipe = async () => {
         try {
             const db = getFirestore();
+            let photoUrl = null;
+            if (recipe.photo) {
+                photoUrl = await uploadImage(recipe.photo);
+            }
+            
             const docRef = await addDoc(collection(db, 'recipes'), {
                 ...recipe,
+                photo: photoUrl,
                 createdAt: new Date(),
             });
     

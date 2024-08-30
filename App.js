@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import StartScreen from "./screens/StartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import SignupScreen from "./screens/SignupScreen";
-import HomeScreen from "./screens/HomeScreen";
-import SearchScreen from "./screens/SearchScreen";
-import AddRecipe from "./screens/AddRecipe";
-import FavouriteScreen from "./screens/FavouriteScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import RecipeDetail from "./screens/RecipeDetail";
-import SettingsScreen from "./screens/profile screens/settings";
-import HelpAndSupport from "./screens/profile screens/helpAndSupport";
-import SecurityAndPrivacy from "./screens/profile screens/securityAndPrivacy";
-import ContactUs from "./screens/profile screens/contactUs";
-import ChangePassword from "./screens/profile screens/changePassword";
-import DeleteAccount from "./screens/profile screens/deleteAccount";
-import { StatusBar } from "expo-status-bar";
-import { Colors } from "./constants/Colors";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { RFValue } from "react-native-responsive-fontsize";
-import { FavoriteProvider } from "./context/FavoriteContext";
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StatusBar } from 'expo-status-bar';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { RFValue } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { Colors } from './constants/Colors';
+import { FavoriteProvider } from './context/FavoriteContext';
+import StartScreen from './screens/StartScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
+import HomeScreen from './screens/HomeScreen';
+import SearchScreen from './screens/SearchScreen';
+import AddRecipe from './screens/AddRecipe';
+import FavouriteScreen from './screens/FavouriteScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import RecipeDetail from './screens/RecipeDetail';
+import SettingsScreen from './screens/profile screens/settings';
+import HelpAndSupport from './screens/profile screens/helpAndSupport';
+import SecurityAndPrivacy from './screens/profile screens/securityAndPrivacy';
+import ContactUs from './screens/profile screens/contactUs';
+import ChangePassword from './screens/profile screens/changePassword';
+import DeleteAccount from './screens/profile screens/deleteAccount';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -40,10 +41,10 @@ const HomeStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
       }} 
     />
     <Stack.Screen 
@@ -57,10 +58,10 @@ const HomeStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -75,10 +76,10 @@ const HomeStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
       }} 
     />
   </Stack.Navigator>
@@ -103,10 +104,10 @@ const SearchStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -127,10 +128,10 @@ const FavouriteStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
       }} 
     />
     <Stack.Screen 
@@ -143,10 +144,10 @@ const FavouriteStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -173,15 +174,15 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
     />
-     <Stack.Screen 
+    <Stack.Screen 
       name="ChangePassword" 
       component={ChangePassword}
       options={{
@@ -191,10 +192,10 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -209,10 +210,10 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -227,10 +228,10 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -245,10 +246,10 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -263,10 +264,10 @@ const ProfileStackNavigator = () => (
         },
         headerTintColor: Colors.primary,
         headerTitleStyle: {
-          fontWeight: "bold",
+          fontWeight: 'bold',
           fontSize: RFValue(24),
         },
-        headerTitleAlign: "center",
+        headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
@@ -280,22 +281,22 @@ const BottomTabNavigator = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
         const iconSize = focused ? RFValue(size + 12) : RFValue(size + 3);
-        const iconVariant = focused ? "" : "-outline";
+        const iconVariant = focused ? '' : '-outline';
 
         switch (route.name) {
-          case "Recipes":
-            iconName = "local-dining";
+          case 'Recipes':
+            iconName = 'local-dining';
             break;
-          case "Search":
-            iconName = "search";
+          case 'Search':
+            iconName = 'search';
             break;
-          case "Add Recipe":
+          case 'Add Recipe':
             iconName = `add-circle${iconVariant}`;
             break;
-          case "Favourite Recipe":
+          case 'Favourite Recipe':
             iconName = `favorite${iconVariant}`;
             break;
-          case "Profile":
+          case 'Profile':
             iconName = `person${iconVariant}`;
             break;
         }
@@ -321,86 +322,89 @@ const BottomTabNavigator = () => (
       options={{ headerShown: false }} 
     />
     <BottomTab.Screen 
-    options={{
-      headerTitle: 'Add Recipe',
-      headerStyle: {
-        backgroundColor: Colors.primaryWhite,
-      },
-      headerTintColor: Colors.primary,
-      headerTitleStyle: {
-        fontWeight: "bold",
-        fontSize: RFValue(24),
-      },
-      headerTitleAlign: "center",
-      headerBackTitle: '',
-      headerBackTitleVisible: false,
-    }}
       name="Add Recipe" 
       component={AddRecipe} 
+      options={{
+        headerTitle: 'Add Recipe',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+      }} 
     />
-    <BottomTab.Screen
-      name="Favourite Recipe"
-      component={FavouriteStackNavigator}
-      options={{ headerShown: false }}
+    <BottomTab.Screen 
+      name="Favourite Recipe" 
+      component={FavouriteStackNavigator} 
+      options={{ headerShown: false }} 
     />
     <BottomTab.Screen 
       name="Profile" 
       component={ProfileStackNavigator} 
-      options={{ headerShown: false }}
+      options={{ headerShown: false }} 
     />
   </BottomTab.Navigator>
 );
 
-const MainAppNavigator = () => (
-  <Stack.Navigator>
-    <Stack.Screen 
-      name="MainApp"
-      component={BottomTabNavigator}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="StartScreen"
-      component={StartScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="LoginScreen"
-      component={LoginScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="SignupScreen"
-      component={SignupScreen}
-      options={{ headerShown: false }}
-    />
-  </Stack.Navigator>
-);
-
-export default function App() {
+const App = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const auth = getAuth();
 
   useEffect(() => {
-    const checkUser = async () => {
-      const storedUser = await AsyncStorage.getItem('user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
       setIsLoading(false);
-    };
-    checkUser();
+    });
+    return () => unsubscribe();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      await AsyncStorage.removeItem('user');
+      // Ensure that any other local data is removed if needed
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   if (isLoading) {
-    return null; 
+    return null; // or a loading spinner
   }
 
   return (
-    <FavoriteProvider>
-      <NavigationContainer>
-        <StatusBar style="dark" />
-        <MainAppNavigator />
-      </NavigationContainer>
-    </FavoriteProvider>
+    <NavigationContainer>
+      <StatusBar style="dark" />
+      <FavoriteProvider>
+        {user ? (
+          <BottomTabNavigator />
+        ) : (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="StartScreen"
+              component={StartScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignupScreen"
+              component={SignupScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        )}
+      </FavoriteProvider>
+    </NavigationContainer>
   );
-}
+};
+
+export default App;

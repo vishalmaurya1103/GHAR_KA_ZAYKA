@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { doc, getDoc } from 'firebase/firestore';
+import { CommonActions } from '@react-navigation/native';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -21,8 +22,16 @@ export default function LoginScreen({ navigation }) {
     setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
+      const user = userCredential.user;
 
+      if (!user.emailVerified) {
+        Alert.alert('Verification Required', 'Please verify your email before logging in.');
+        await auth.signOut();
+        setLoading(false);
+        return;
+      }
+
+      const uid = user.uid;
       const userDocRef = doc(db, 'users', uid);
       const userDoc = await getDoc(userDocRef);
 
@@ -30,7 +39,7 @@ export default function LoginScreen({ navigation }) {
         const userData = userDoc.data();
         await AsyncStorage.setItem('user', JSON.stringify(userCredential.user));
         await AsyncStorage.setItem('userName', userData.fullName);
-        navigation.reset({
+        CommonActions.reset({
           index: 0,
           routes: [{ name: 'MainApp' }],
         });
