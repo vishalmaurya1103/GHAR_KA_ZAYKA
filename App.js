@@ -24,6 +24,7 @@ import SecurityAndPrivacy from './screens/profile screens/securityAndPrivacy';
 import ContactUs from './screens/profile screens/contactUs';
 import ChangePassword from './screens/profile screens/changePassword';
 import DeleteAccount from './screens/profile screens/deleteAccount';
+import Chatbot from './screens/ChatbotScreen';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -65,6 +66,22 @@ const HomeStackNavigator = () => (
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
+    />
+    <Stack.Screen 
+      name="Chatbot" 
+      component={Chatbot}
+      options={{ 
+        headerTitle: 'Zayka Bot',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+      }} 
     />
     <Stack.Screen 
       name="Settings" 

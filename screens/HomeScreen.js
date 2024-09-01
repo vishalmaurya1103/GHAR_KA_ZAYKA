@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { getRecipesByCategory, fetchRecipesFromFirebase } from '../Backend Api/Api';
 import RecipeCard from '../components/RecipeCard';
 import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 
 const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
 
@@ -30,14 +32,14 @@ const HomeScreen = ({ navigation }) => {
             imageUrl = imageUrl;
           } else if (!imageUrl) {
             imageUrl = null;
-          } 
+          }
 
           const cookTimeFromApi = parseInt(recipe.readyInMinutes, 10);
           const cookTimeFromFirebase = parseInt(recipe.cookTime, 10);
 
-          const cookTime = (!isNaN(cookTimeFromApi) && cookTimeFromApi > 0) ? cookTimeFromApi : 
-                            (!isNaN(cookTimeFromFirebase) && cookTimeFromFirebase > 0) ? cookTimeFromFirebase : 
-                            0;
+          const cookTime = (!isNaN(cookTimeFromApi) && cookTimeFromApi > 0) ? cookTimeFromApi :
+            (!isNaN(cookTimeFromFirebase) && cookTimeFromFirebase > 0) ? cookTimeFromFirebase :
+              0;
 
           return {
             ...recipe,
@@ -59,6 +61,10 @@ const HomeScreen = ({ navigation }) => {
     loadRecipes();
   }, []);
 
+  const handleChatPress = () => {
+    navigation.navigate('Chatbot');
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -68,27 +74,32 @@ const HomeScreen = ({ navigation }) => {
   }
 
   const renderRecipe = ({ item }) => (
-    <RecipeCard 
+    <RecipeCard
       image={item.image}
       title={item.title}
       readyInMinutes={item.cookTime}
       veryPopular={item.veryPopular}
       vegetarian={item.vegetarian}
       category={item.category}
-      onPress={() => navigation.navigate('RecipeDetail', { recipe: item })} 
+      onPress={() => navigation.navigate('RecipeDetail', { recipe: item })}
     />
   );
 
   const keyExtractor = (item) => item.uniqueId;
 
   return (
-    <FlatList
-      data={recipes}
-      renderItem={renderRecipe}
-      keyExtractor={keyExtractor}
-      ListHeaderComponent={<Userinfo />}
-      contentContainerStyle={styles.container}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={recipes}
+        renderItem={renderRecipe}
+        keyExtractor={keyExtractor}
+        ListHeaderComponent={<Userinfo />}
+        contentContainerStyle={styles.listContainer}
+      />
+      <TouchableOpacity style={styles.floatingButton} onPress={handleChatPress}>
+        <MaterialIcons name="assistant" size={26} color="#fff" />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -97,10 +108,23 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: Colors.primaryWhite,
   },
+  listContainer: {
+    paddingBottom: 100, // Add padding to avoid overlap with the chat button
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: Colors.primary,
+    borderRadius: 30,
+    padding: 15,
+    elevation: 4,
+    zIndex: 100, // Ensure it stays above other content
   },
 });
 
