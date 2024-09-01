@@ -19,6 +19,8 @@ const API_KEYS = [
   '3af5bd672b294f6bb3c82b4a367f0d7d',
   '2c27d41605124a169d13ff619a65c2ce',
   'e8be6b2d649d45e394c0ce912b17b255',
+  '30c611037caa486d91910d03ec9e2c74',
+  'a8a5448eb09d410a9b06ed7da03b8235',
 ];
 
 let currentApiKeyIndex = 0;

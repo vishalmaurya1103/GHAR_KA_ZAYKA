@@ -1,23 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 import { Colors } from '../constants/Colors';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const ChatBubble = ({ role, text, onSpeech }) => {
-    const { width } = useWindowDimensions(); // Get the current screen width
-
     return (
         <View
             style={[
                 styles.chatItem,
                 role === "user" ? styles.userChatItem : styles.modelChatItem,
-                { maxWidth: width * 0.8 }, // Adjust based on screen width
+                { maxWidth: wp("80%") },
             ]}
         >
-            <Text style={[styles.chatText, { fontSize: width * 0.04 }]}>{text}</Text>
+            <Text style={styles.chatText}>{text}</Text>
             {role === "model" && (
                 <TouchableOpacity onPress={onSpeech} style={styles.speakerIcon}>
-                    <Ionicons name="volume-high-outline" size={width * 0.06} color="#fff" />
+                    <Ionicons
+                        name="volume-high-outline"
+                        size={RFPercentage(3)}
+                        color="#fff"
+                    />
                 </TouchableOpacity>
             )}
         </View>
@@ -26,15 +30,15 @@ const ChatBubble = ({ role, text, onSpeech }) => {
 
 const styles = StyleSheet.create({
     chatItem: {
-        marginBottom: 10,
-        padding: 12,
-        borderRadius: 20,
+        marginBottom: hp("1.5%"),
+        padding: wp("3%"),
+        borderRadius: wp("5%"),
         position: "relative",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
-        elevation: 5, // For Android shadow
+        elevation: 5,
     },
     userChatItem: {
         alignSelf: "flex-end",
@@ -42,15 +46,16 @@ const styles = StyleSheet.create({
     },
     modelChatItem: {
         alignSelf: "flex-start",
-        backgroundColor: "#2c3e50", // Dark gray for model responses
+        backgroundColor: "#2c3e50",
     },
     chatText: {
         color: "#fff",
+        fontSize: RFPercentage(2.5),
     },
     speakerIcon: {
         position: "absolute",
-        bottom: 8,
-        right: 8,
+        bottom: hp("1%"),
+        right: wp("1%"),
     },
 });
 

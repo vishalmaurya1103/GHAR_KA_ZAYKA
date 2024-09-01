@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    FlatList,
-    ActivityIndicator,
-    StyleSheet,
-    useWindowDimensions,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import axios from "axios";
 import ChatBubble from "./ChatBubble";
 import { speak, isSpeakingAsync, stop } from "expo-speech";
 import { Colors } from '../constants/Colors';
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 const Chatbot = () => {
     const [chat, setChat] = useState([]);
@@ -21,8 +13,6 @@ const Chatbot = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isSpeaking, setIsSpeaking] = useState(false);
-
-    const { width, height } = useWindowDimensions(); // Get the current screen dimensions
 
     const API_KEY = "AIzaSyCfeHi8BTclhubwhJEwhRGxCg1DZCpf1XU";
 
@@ -35,6 +25,8 @@ const Chatbot = () => {
             },
         ];
 
+        setChat(updatedChat);
+        setUserInput("");
         setLoading(true);
 
         try {
@@ -44,7 +36,6 @@ const Chatbot = () => {
                     contents: updatedChat,
                 }
             );
-            console.log("Gemini Pro API Response:", response.data);
 
             const modelResponse =
                 response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
@@ -59,7 +50,6 @@ const Chatbot = () => {
                 ];
 
                 setChat(updatedChatWithModel);
-                setUserInput("");
             }
         } catch (error) {
             console.error("Error calling Gemini Pro API:", error);
@@ -91,8 +81,8 @@ const Chatbot = () => {
     );
 
     return (
-        <View style={[styles.container, { padding: width * 0.04 }]}>
-            <Text style={[styles.title, { fontSize: width * 0.05 }]}>
+        <View style={[styles.container, { padding: wp('4%') }]}>
+            <Text style={[styles.title, { fontSize: RFPercentage(3) }]}>
                 Craving something tasty? Let's find it!
             </Text>
             <FlatList
@@ -100,12 +90,15 @@ const Chatbot = () => {
                 renderItem={renderChatItem}
                 keyExtractor={(item, index) => index.toString()}
                 contentContainerStyle={styles.chatContainer}
+                ListFooterComponent={
+                    loading && <ActivityIndicator style={styles.loading} color="#333" />
+                }
             />
             <View style={styles.inputContainer}>
                 <TextInput
                     style={[
                         styles.input,
-                        { width: width * 0.08, height: height * 0.06 },
+                        { width: wp('92%'), height: hp('6%') },
                     ]}
                     placeholder="Type your message ..."
                     placeholderTextColor="#aaa"
@@ -113,15 +106,14 @@ const Chatbot = () => {
                     onChangeText={setUserInput}
                 />
                 <TouchableOpacity
-                    style={[styles.button, { width: width * 0.2, height: height * 0.05 }]}
+                    style={[styles.button, { width: wp('20%'), height: hp('5%') }]}
                     onPress={handleUserInput}
                 >
-                    <Text style={[styles.buttonText, { fontSize: width * 0.045 }]}>
+                    <Text style={[styles.buttonText, { fontSize: RFPercentage(2.2) }]}>
                         Send
                     </Text>
                 </TouchableOpacity>
             </View>
-            {loading && <ActivityIndicator style={styles.loading} color="#333" />}
             {error && <Text style={styles.error}>{error}</Text>}
         </View>
     );
@@ -129,15 +121,15 @@ const Chatbot = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 0.03,
+        paddingTop: hp('3%'),
         flex: 1,
         backgroundColor: "#f8f8f8",
     },
     title: {
         fontWeight: "bold",
         color: "#333",
-        marginBottom: 10,
-        marginTop: 10,
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
         textAlign: "center",
     },
     chatContainer: {
@@ -147,35 +139,34 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: 10,
+        marginTop: hp('1%'),
     },
     input: {
         flex: 1,
-        marginRight: 8,
-        padding: 10,
+        marginRight: wp('2%'),
+        padding: wp('2%'),
         borderColor: Colors.primary,
         borderWidth: 1,
-        borderRadius: 25,
+        borderRadius: wp('6%'),
         color: "#333",
         backgroundColor: "#fff",
     },
     button: {
-        padding: 7,
+        padding: wp('2%'),
         backgroundColor: Colors.primary,
-        borderRadius: 25,
+        borderRadius: wp('6%'),
     },
     buttonText: {
         color: "#fff",
         textAlign: "center",
     },
     loading: {
-        marginTop: 10,
+        marginTop: hp('1%'),
     },
     error: {
         color: "red",
-        marginTop: 10,
+        marginTop: hp('1%'),
     },
 });
 
 export default Chatbot;
-

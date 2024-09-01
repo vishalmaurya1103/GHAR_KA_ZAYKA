@@ -97,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
         contentContainerStyle={styles.listContainer}
       />
       <TouchableOpacity style={styles.floatingButton} onPress={handleChatPress}>
-        <MaterialIcons name="assistant" size={26} color="#fff" />
+        <MaterialIcons name="fastfood" size={26} color="#fff" />
       </TouchableOpacity>
     </View>
   );
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryWhite,
   },
   listContainer: {
-    paddingBottom: 100, // Add padding to avoid overlap with the chat button
+    paddingBottom: 100, 
   },
   loadingContainer: {
     flex: 1,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 15,
     elevation: 4,
-    zIndex: 100, // Ensure it stays above other content
+    zIndex: 100,
   },
 });
 

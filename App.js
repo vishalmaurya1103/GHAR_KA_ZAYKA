@@ -5,8 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { RFValue } from 'react-native-responsive-fontsize';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Colors } from './constants/Colors';
 import { FavoriteProvider } from './context/FavoriteContext';
 import StartScreen from './screens/StartScreen';
@@ -81,6 +80,8 @@ const HomeStackNavigator = () => (
           fontSize: RFValue(24),
         },
         headerTitleAlign: 'center',
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
       }} 
     />
     <Stack.Screen 
@@ -380,18 +381,8 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      await AsyncStorage.removeItem('user');
-      // Ensure that any other local data is removed if needed
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
   if (isLoading) {
-    return null; // or a loading spinner
+    return null; 
   }
 
   return (
