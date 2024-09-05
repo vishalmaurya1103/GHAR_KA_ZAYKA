@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { Colors } from '../constants/Colors';
@@ -8,9 +8,44 @@ import { auth, signOut } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation , CommonActions } from '@react-navigation/native';
 
+
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const storedUserName = await AsyncStorage.getItem('userName');
+        if (storedUserName) {
+          setUserName(storedUserName);
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
+  // Function to fetch email
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      try {
+        const storedEmail = await AsyncStorage.getItem('email');
+        if (storedEmail) {
+          setEmail(storedEmail);
+        }
+        // console.log('Fetched user email:', storedEmail);
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    };
+    fetchUserEmail();
+    }, []);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -37,21 +72,21 @@ export default function ProfileScreen() {
             <Image
               alt=""
               source={{
-                uri: 'https://img.freepik.com/free-photo/funny-monkey-with-glasses-studio_23-2150844104.jpg',
+                uri: "https://previews.123rf.com/images/tanyastock/tanyastock1803/tanyastock180300242/97334667-user-icon-human-person-symbol-avatar-login-sign-circle-button-with-soft-color-gradient-background.jpg",
               }}
               style={styles.profileAvatar}
             />
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.profileAction}>
                 <FeatherIcon color="#fff" name="edit-3" size={wp('4%')} />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </TouchableOpacity>
 
         <View>
-          <Text style={styles.profileName}>John Wick</Text>
-          <Text style={styles.profileAddress}>gaandfaadApp@gmail.com</Text>
+          <Text style={styles.profileName}>{userName}!</Text>
+          <Text style={styles.profileAddress}>{email}</Text>
         </View>
       </View>
 

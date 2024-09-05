@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "GHAR_KA_ZAYKA_APP",
+    "name": "GharKaZayka",
     "slug": "GHAR_KA_ZAYKA_APP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -22,7 +22,7 @@
         "CAMERA"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       }
     },

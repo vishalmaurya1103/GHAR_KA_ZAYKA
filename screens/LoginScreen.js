@@ -39,6 +39,7 @@ export default function LoginScreen({ navigation }) {
         const userData = userDoc.data();
         await AsyncStorage.setItem('user', JSON.stringify(userCredential.user));
         await AsyncStorage.setItem('userName', userData.fullName);
+        await AsyncStorage.setItem('email', user.email);
         CommonActions.reset({
           index: 0,
           routes: [{ name: 'MainApp' }],
