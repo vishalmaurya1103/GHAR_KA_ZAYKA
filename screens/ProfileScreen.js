@@ -94,7 +94,8 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
 
-          <TouchableOpacity style={styles.row}>
+          <TouchableOpacity onPress={() => navigation.navigate('editprofile')}
+            style={styles.row}>
             <View style={[styles.rowIcon, { backgroundColor: '#eeeeef' }]}>
               <Image
                 source={require('../assets/images/account.png')}

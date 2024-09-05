@@ -24,6 +24,7 @@ import ContactUs from './screens/profile screens/contactUs';
 import ChangePassword from './screens/profile screens/changePassword';
 import DeleteAccount from './screens/profile screens/deleteAccount';
 import Chatbot from './screens/ChatbotScreen';
+import EditProfile from './screens/profile screens/editprofile';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -181,6 +182,24 @@ const ProfileStackNavigator = () => (
       options={{ 
         headerShown: false,
       }} 
+    />
+    <Stack.Screen 
+      name="editprofile" 
+      component={EditProfile}
+      options={{
+        headerTitle: 'Edit Profile',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
     />
     <Stack.Screen 
       name="Settings" 
