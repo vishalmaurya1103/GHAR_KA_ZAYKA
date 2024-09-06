@@ -6,8 +6,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Modal from 'react-native-modal'; 
-import 'firebase/compat/storage';
+import Modal from 'react-native-modal';
+import { getAuth } from 'firebase/auth';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -21,7 +21,7 @@ export default function AddRecipeScreen() {
         category: '',
         difficulty: '',
         diet: '',
-        calories:'',
+        calories: '',
         ingredients: [''],
         instruction: [''],
     });
@@ -29,6 +29,8 @@ export default function AddRecipeScreen() {
     const [cameraPermissionsInfo, requestCameraPermission] = useCameraPermissions();
     const [mediaLibraryPermissionsInfo, requestMediaLibraryPermission] = useMediaLibraryPermissions();
     const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const auth = getAuth(); 
 
     async function verifyPermissions(permissionType) {
         let permissionResponse;
@@ -124,6 +126,13 @@ export default function AddRecipeScreen() {
     }
     
     const handleSaveRecipe = async () => {
+        const user = auth.currentUser; 
+
+        if (!user) {
+            Alert.alert("Error", "You must be logged in to save a recipe.");
+            return;
+        }
+
         try {
             const db = getFirestore();
             let photoUrl = null;
@@ -134,6 +143,7 @@ export default function AddRecipeScreen() {
             const docRef = await addDoc(collection(db, 'recipes'), {
                 ...recipe,
                 photo: photoUrl,
+                userId: user.uid, 
                 createdAt: new Date(),
             });
     

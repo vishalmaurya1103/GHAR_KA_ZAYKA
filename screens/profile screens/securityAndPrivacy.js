@@ -13,7 +13,6 @@ const SecurityAndPrivacy = () => {
       <Text style={styles.title}>Security and Privacy</Text>
       <Text style={styles.subtitle}>Learn about our security practices and privacy policies to keep your data safe.</Text>
 
-      {/* Security Section */}
       <TouchableOpacity onPress={() => setSecurityCollapsed(!securityCollapsed)} style={styles.sectionHeaderContainer}>
         <Text style={styles.sectionHeader}>{securityCollapsed ? '▶' : '▼'} Security Practices</Text>
       </TouchableOpacity>
@@ -30,7 +29,6 @@ const SecurityAndPrivacy = () => {
         </View>
       </Collapsible>
 
-      {/* Privacy Section */}
       <TouchableOpacity onPress={() => setPrivacyCollapsed(!privacyCollapsed)} style={styles.sectionHeaderContainer}>
         <Text style={styles.sectionHeader}>{privacyCollapsed ? '▶' : '▼'} Privacy Policy</Text>
       </TouchableOpacity>

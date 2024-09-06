@@ -14,13 +14,6 @@ const HelpAndSupport = () => {
       <Text style={styles.title}>Help and Support</Text>
       <Text style={styles.subtitle}>Need help? Find answers to your questions or get in touch with us.</Text>
 
-      {/* Search Bar (Commented Out) */}
-      {/* <TextInput
-        style={styles.searchBar}
-        placeholder="Search for help..."
-      /> */}
-
-      {/* FAQs Section */}
       <TouchableOpacity onPress={() => setFaqCollapsed(!faqCollapsed)} style={styles.sectionHeaderContainer}>
         <Text style={styles.sectionHeader}>{faqCollapsed ? '▶' : '▼'} Frequently Asked Questions</Text>
       </TouchableOpacity>

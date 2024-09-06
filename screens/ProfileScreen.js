@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation , CommonActions } from '@react-navigation/native';
 
 
-
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
@@ -31,7 +30,6 @@ export default function ProfileScreen() {
     fetchUserName();
   }, []);
 
-  // Function to fetch email
   useEffect(() => {
     const fetchUserEmail = async () => {
       try {
@@ -39,7 +37,6 @@ export default function ProfileScreen() {
         if (storedEmail) {
           setEmail(storedEmail);
         }
-        // console.log('Fetched user email:', storedEmail);
       } catch (error) {
         console.error('Error fetching user email:', error);
       }
@@ -76,11 +73,6 @@ export default function ProfileScreen() {
               }}
               style={styles.profileAvatar}
             />
-            {/* <TouchableOpacity>
-              <View style={styles.profileAction}>
-                <FeatherIcon color="#fff" name="edit-3" size={wp('4%')} />
-              </View>
-            </TouchableOpacity> */}
           </View>
         </TouchableOpacity>
 
@@ -111,7 +103,7 @@ export default function ProfileScreen() {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.row}>
+          <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('MyRecipes')}>
             <View style={[styles.rowIcon, { backgroundColor: '#eeeeef' }]}>
               <Image
                 source={require('../assets/images/recipe-book.png')}

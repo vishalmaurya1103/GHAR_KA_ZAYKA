@@ -6,7 +6,6 @@ import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
 const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
 
 const HomeScreen = ({ navigation }) => {
@@ -22,33 +21,52 @@ const HomeScreen = ({ navigation }) => {
           fetchRecipesFromFirebase()
         ]);
 
-        const combinedRecipes = [
-          ...apiRecipes.flat(),
-          ...firebaseRecipes
-        ].map((recipe, index) => {
-          let imageUrl = recipe.photo || recipe.image;
+        const seenRecipeIds = new Set();
+        const combinedRecipes = [];
 
+        const addRecipe = (recipe) => {
+          if (!seenRecipeIds.has(recipe.id)) {
+            seenRecipeIds.add(recipe.id);
+            combinedRecipes.push(recipe);
+          }
+        };
+
+        apiRecipes.flat().forEach(recipe => {
+          let imageUrl = recipe.photo || recipe.image;
           if (isFirebaseImageUrl(imageUrl)) {
             imageUrl = imageUrl;
           } else if (!imageUrl) {
             imageUrl = null;
           }
 
-          const cookTimeFromApi = parseInt(recipe.readyInMinutes, 10);
-          const cookTimeFromFirebase = parseInt(recipe.cookTime, 10);
-
-          const cookTime = (!isNaN(cookTimeFromApi) && cookTimeFromApi > 0) ? cookTimeFromApi :
-            (!isNaN(cookTimeFromFirebase) && cookTimeFromFirebase > 0) ? cookTimeFromFirebase :
-              0;
-
-          return {
+          const cookTime = parseInt(recipe.readyInMinutes, 10) || 0;
+          addRecipe({
             ...recipe,
             image: imageUrl,
-            cookTime: cookTime,
+            cookTime,
             servings: parseInt(recipe.servings, 10) || 0,
             calories: parseInt(recipe.calories, 10) || 0,
-            uniqueId: `${recipe.id}-${index}`
-          };
+            uniqueId: recipe.id,
+          });
+        });
+
+        firebaseRecipes.forEach(recipe => {
+          let imageUrl = recipe.photo || recipe.image;
+          if (isFirebaseImageUrl(imageUrl)) {
+            imageUrl = imageUrl;
+          } else if (!imageUrl) {
+            imageUrl = null;
+          }
+
+          const cookTime = parseInt(recipe.cookTime, 10) || 0;
+          addRecipe({
+            ...recipe,
+            image: imageUrl,
+            cookTime,
+            servings: parseInt(recipe.servings, 10) || 0,
+            calories: parseInt(recipe.calories, 10) || 0,
+            uniqueId: recipe.id,
+          });
         });
 
         setRecipes(combinedRecipes);
@@ -109,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryWhite,
   },
   listContainer: {
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   loadingContainer: {
     flex: 1,

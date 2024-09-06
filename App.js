@@ -25,6 +25,7 @@ import ChangePassword from './screens/profile screens/changePassword';
 import DeleteAccount from './screens/profile screens/deleteAccount';
 import Chatbot from './screens/ChatbotScreen';
 import EditProfile from './screens/profile screens/editprofile';
+import MyRecipes from './screens/profile screens/MyRecipes';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -174,6 +175,47 @@ const FavouriteStackNavigator = () => (
   </Stack.Navigator>
 );
 
+const MyRecipesNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="MyRecipesScreen" 
+      component={MyRecipes}
+      options={{ 
+        headerTitle: 'My Recipes',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }} 
+    />
+    <Stack.Screen 
+      name="RecipeDetail" 
+      component={RecipeDetail}
+      options={{
+        headerTitle: 'Recipe Details',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
 const ProfileStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen 
@@ -200,6 +242,11 @@ const ProfileStackNavigator = () => (
         headerBackTitle: '',
         headerBackTitleVisible: false,
       }}
+    />
+    <Stack.Screen 
+      name="MyRecipes" 
+      component={MyRecipesNavigator}
+      options={{ headerShown: false }}
     />
     <Stack.Screen 
       name="Settings" 
