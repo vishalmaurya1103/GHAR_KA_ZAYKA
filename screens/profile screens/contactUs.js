@@ -41,7 +41,7 @@ const ContactUs = () => {
         setMessage('');
       }
     } catch (error) {
-      console.log('An error occurred while sending the message.');
+      Alert.alert('An error occurred while sending the message.');
     }
   };
 

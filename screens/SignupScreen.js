@@ -29,7 +29,7 @@ export default function SignupScreen({ navigation }) {
 
       await sendEmailVerification(user, {
         handleCodeInApp: true,
-        url: 'http://gahre-ka-zayka-login.firebaseapp.com/finishSignUp?cartId=1234', // Update URL to your app’s URL
+        url: 'http://gahre-ka-zayka-login.firebaseapp.com/finishSignUp?cartId=1234',
       });
       Alert.alert('Verification email sent', 'Please check your inbox.');
 
@@ -46,7 +46,6 @@ export default function SignupScreen({ navigation }) {
 
     } catch (error) {
       Alert.alert('Signup Error', error.message);
-      console.log(error.message);
     }
   };
 

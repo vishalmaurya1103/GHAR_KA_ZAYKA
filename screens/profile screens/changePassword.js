@@ -19,9 +19,8 @@ const ChangePassword = () => {
     try {
       await firebase.auth().sendPasswordResetEmail(email);
       Alert.alert('Success', 'Password reset email sent to your email address.');
-      setEmail(''); // Clear the input field after sending the email
+      setEmail(''); 
     } catch (error) {
-      console.log('Error', error);
       Alert.alert('Error', error.message);
     }
   };

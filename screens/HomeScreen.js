@@ -33,6 +33,7 @@ const HomeScreen = ({ navigation }) => {
 
         apiRecipes.flat().forEach(recipe => {
           let imageUrl = recipe.photo || recipe.image;
+          let videoUrl = recipe.video || null;
           if (isFirebaseImageUrl(imageUrl)) {
             imageUrl = imageUrl;
           } else if (!imageUrl) {
@@ -43,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
           addRecipe({
             ...recipe,
             image: imageUrl,
+            video: videoUrl,
             cookTime,
             servings: parseInt(recipe.servings, 10) || 0,
             calories: parseInt(recipe.calories, 10) || 0,
@@ -52,6 +54,7 @@ const HomeScreen = ({ navigation }) => {
 
         firebaseRecipes.forEach(recipe => {
           let imageUrl = recipe.photo || recipe.image;
+          let videoUrl = recipe.video || null; 
           if (isFirebaseImageUrl(imageUrl)) {
             imageUrl = imageUrl;
           } else if (!imageUrl) {
@@ -62,6 +65,7 @@ const HomeScreen = ({ navigation }) => {
           addRecipe({
             ...recipe,
             image: imageUrl,
+            video: videoUrl,
             cookTime,
             servings: parseInt(recipe.servings, 10) || 0,
             calories: parseInt(recipe.calories, 10) || 0,

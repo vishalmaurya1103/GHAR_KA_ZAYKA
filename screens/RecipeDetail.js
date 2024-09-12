@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Text, Image, StyleSheet, ScrollView, View } from "react-native";
-import { Colors } from "../constants/Colors";
-import { RFValue } from "react-native-responsive-fontsize";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import IngredientsList from "../components/IngredientsList";
-import InstructionsList from "../components/InstructionsList";
-import NutritionInfo from "../components/NutritionInfo";
-import RecipeInfoItem from "../components/RecipeInfoItem";
-import IconButton from "../components/IconButton";
-import { useFavorites } from "../context/FavoriteContext";
-import RecipeDescription from "../components/RecipeDescription";  
+import React, { useState, useEffect, useRef } from 'react';
+import { Text, Image, StyleSheet, ScrollView, View } from 'react-native';
+import { Colors } from '../constants/Colors';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import IngredientsList from '../components/IngredientsList';
+import InstructionsList from '../components/InstructionsList';
+import NutritionInfo from '../components/NutritionInfo';
+import RecipeInfoItem from '../components/RecipeInfoItem';
+import IconButton from '../components/IconButton';
+import { useFavorites } from '../context/FavoriteContext';
+import RecipeDescription from '../components/RecipeDescription';  
+import { Video } from 'expo-av';
 
 const RecipeDetail = ({ route, navigation }) => {
   const { recipe } = route.params || {};
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
   const [isFav, setIsFav] = useState(false);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     setIsFav(isFavorite(recipe.id));
@@ -34,7 +36,7 @@ const RecipeDetail = ({ route, navigation }) => {
       headerRight: () => (
         <IconButton
           onPress={changeFavoriteStatusHandler}
-          icon={isFav ? "heart" : "heart-outline"}
+          icon={isFav ? 'heart' : 'heart-outline'}
           color="#f50909"
           size={24}
         />
@@ -66,6 +68,20 @@ const RecipeDetail = ({ route, navigation }) => {
       <InstructionsList instructions={recipe.instruction || recipe.analyzedInstructions?.[0]?.steps || []} />
       <NutritionInfo recipe={recipe} />
 
+      {recipe.video && (
+        <View style={styles.videoContainer}>
+          <Text style={styles.videoTitle}>Recipe Video :</Text>
+          <Video
+            ref={videoRef}
+            source={{ uri: recipe.video }}
+            style={styles.video}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+          />
+        </View>
+      )}
+
       <View style={{ marginBottom: hp('5%') }} />
     </ScrollView>
   );
@@ -94,6 +110,22 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginVertical: hp('2%'),
+  },
+  videoContainer: {
+    marginTop: 16,
+    width: '100%',
+  },
+  videoTitle: {
+    fontSize: RFValue(18),
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: Colors.primary,
+  },
+  video: {
+    width: wp('90%'),
+    height: hp('25%'),
+    marginTop: hp('2%'),
+    marginBottom: hp('2%'),
   },
 });
 
