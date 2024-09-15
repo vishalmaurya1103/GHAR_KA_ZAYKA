@@ -11,6 +11,8 @@ import Modal from "react-native-modal";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {db} from '../config/firebase'
 
 export default function AddRecipeScreen() {
   const [recipe, setRecipe] = useState({
@@ -181,41 +183,57 @@ export default function AddRecipeScreen() {
     return url;
   }
 
-  const handleSaveRecipe = async () => {
+  async function handleSaveRecipe() {
     const user = auth.currentUser;
-
+  
     if (!user) {
       Alert.alert("Error", "You must be logged in to save a recipe.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
-      const db = getFirestore();
+      // Fetch location from AsyncStorage
+      const location = await AsyncStorage.getItem('location');
+      const parsedLocation = location ? JSON.parse(location) : null;
+  
       let photoUrl = null;
       let videoUrl = null;
+  
       if (recipe.photo) {
         photoUrl = await uploadFile(recipe.photo, "image");
       }
       if (recipe.video) {
         videoUrl = await uploadFile(recipe.video, "video");
       }
-
+  
       const docRef = await addDoc(collection(db, "recipes"), {
         ...recipe,
         photo: photoUrl,
         video: videoUrl,
         userId: user.uid,
         createdAt: new Date(),
+        location: parsedLocation,  // Add location to the recipe data
       });
-
+  
       setLoading(false);
       Alert.alert(
         "Recipe Uploaded",
         "Your recipe has been successfully uploaded to the GHAR_KA_ZAYKA app."
       );
-
+  
+      // Log the uploaded recipe details
+      console.log("Recipe uploaded successfully.");
+      console.log("Recipe Details:", {
+        ...recipe,
+        photo: photoUrl,
+        video: videoUrl,
+        userId: user.uid,
+        createdAt: new Date(),
+        location: parsedLocation,  // Log location details
+      });
+  
       setRecipe({
         photo: null,
         video: null,
@@ -238,7 +256,10 @@ export default function AddRecipeScreen() {
         "An error occurred while saving the recipe. Please try again."
       );
     }
-  };
+  }
+  
+  
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
