@@ -22,6 +22,7 @@ import HelpAndSupport from './screens/profile screens/helpAndSupport';
 import SecurityAndPrivacy from './screens/profile screens/securityAndPrivacy';
 import ContactUs from './screens/profile screens/contactUs';
 import ChangePassword from './screens/profile screens/changePassword';
+import LocationSelection from './screens/profile screens/location';
 import DeleteAccount from './screens/profile screens/deleteAccount';
 import Chatbot from './screens/ChatbotScreen';
 import EditProfile from './screens/profile screens/editprofile';
@@ -32,10 +33,10 @@ const BottomTab = createBottomTabNavigator();
 
 const HomeStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="Home" 
-      component={HomeScreen} 
-      options={{ 
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
         headerShown: true,
         headerTitle: 'Recipes',
         headerStyle: {
@@ -47,10 +48,10 @@ const HomeStackNavigator = () => (
           fontSize: RFValue(24),
         },
         headerTitleAlign: 'center',
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="RecipeDetail" 
+    <Stack.Screen
+      name="RecipeDetail"
       component={RecipeDetail}
       options={{
         headerShown: true,
@@ -68,10 +69,10 @@ const HomeStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="Chatbot" 
+    <Stack.Screen
+      name="Chatbot"
       component={Chatbot}
-      options={{ 
+      options={{
         headerTitle: 'Zayka Bot',
         headerStyle: {
           backgroundColor: Colors.primaryWhite,
@@ -84,12 +85,12 @@ const HomeStackNavigator = () => (
         headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="Settings" 
-      component={SettingsScreen}  
-      options={{ 
+    <Stack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
         headerTitle: 'Settings',
         headerStyle: {
           backgroundColor: Colors.primaryWhite,
@@ -100,22 +101,22 @@ const HomeStackNavigator = () => (
           fontSize: RFValue(24),
         },
         headerTitleAlign: 'center',
-      }} 
+      }}
     />
   </Stack.Navigator>
 );
 
 const SearchStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="SearchScreen" 
+    <Stack.Screen
+      name="SearchScreen"
       component={SearchScreen}
-      options={{ 
+      options={{
         headerShown: false
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="RecipeDetail" 
+    <Stack.Screen
+      name="RecipeDetail"
       component={RecipeDetail}
       options={{
         headerTitle: 'Recipe Details',
@@ -137,10 +138,10 @@ const SearchStackNavigator = () => (
 
 const FavouriteStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="FavouriteScreen" 
-      component={FavouriteScreen} 
-      options={{ 
+    <Stack.Screen
+      name="FavouriteScreen"
+      component={FavouriteScreen}
+      options={{
         headerShown: true,
         headerTitle: 'Favourite Recipes',
         headerStyle: {
@@ -152,10 +153,10 @@ const FavouriteStackNavigator = () => (
           fontSize: RFValue(24),
         },
         headerTitleAlign: 'center',
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="RecipeDetail" 
+    <Stack.Screen
+      name="RecipeDetail"
       component={RecipeDetail}
       options={{
         headerTitle: 'Recipe Details',
@@ -177,10 +178,10 @@ const FavouriteStackNavigator = () => (
 
 const MyRecipesNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="MyRecipesScreen" 
+    <Stack.Screen
+      name="MyRecipesScreen"
       component={MyRecipes}
-      options={{ 
+      options={{
         headerTitle: 'My Recipes',
         headerStyle: {
           backgroundColor: Colors.primaryWhite,
@@ -193,10 +194,10 @@ const MyRecipesNavigator = () => (
         headerTitleAlign: 'center',
         headerBackTitle: '',
         headerBackTitleVisible: false,
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="RecipeDetail" 
+    <Stack.Screen
+      name="RecipeDetail"
       component={RecipeDetail}
       options={{
         headerTitle: 'Recipe Details',
@@ -218,15 +219,15 @@ const MyRecipesNavigator = () => (
 
 const ProfileStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="ProfileScreen" 
+    <Stack.Screen
+      name="ProfileScreen"
       component={ProfileScreen}
-      options={{ 
+      options={{
         headerShown: false,
-      }} 
+      }}
     />
-    <Stack.Screen 
-      name="editprofile" 
+    <Stack.Screen
+      name="editprofile"
       component={EditProfile}
       options={{
         headerTitle: 'Edit Profile',
@@ -243,13 +244,13 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="MyRecipes" 
+    <Stack.Screen
+      name="MyRecipes"
       component={MyRecipesNavigator}
       options={{ headerShown: false }}
     />
-    <Stack.Screen 
-      name="Settings" 
+    <Stack.Screen
+      name="Settings"
       component={SettingsScreen}
       options={{
         headerTitle: 'Settings',
@@ -266,8 +267,8 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="ChangePassword" 
+    <Stack.Screen
+      name="ChangePassword"
       component={ChangePassword}
       options={{
         headerTitle: 'Change Password',
@@ -284,8 +285,27 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="DeleteAccount" 
+
+    <Stack.Screen
+      name="Location"
+      component={LocationSelection}
+      options={{
+        headerTitle: 'Location',
+        headerStyle: {
+          backgroundColor: Colors.primaryWhite,
+        },
+        headerTintColor: Colors.primary,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: RFValue(24),
+        },
+        headerTitleAlign: 'center',
+        headerBackTitle: '',
+        headerBackTitleVisible: false,
+      }}
+    />
+    <Stack.Screen
+      name="DeleteAccount"
       component={DeleteAccount}
       options={{
         headerTitle: 'Delete Account',
@@ -302,8 +322,8 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="HelpAndSupport" 
+    <Stack.Screen
+      name="HelpAndSupport"
       component={HelpAndSupport}
       options={{
         headerTitle: 'Help And Support',
@@ -320,8 +340,8 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="SecurityAndPrivacy" 
+    <Stack.Screen
+      name="SecurityAndPrivacy"
       component={SecurityAndPrivacy}
       options={{
         headerTitle: 'Security And Privacy',
@@ -338,8 +358,8 @@ const ProfileStackNavigator = () => (
         headerBackTitleVisible: false,
       }}
     />
-    <Stack.Screen 
-      name="ContactUs" 
+    <Stack.Screen
+      name="ContactUs"
       component={ContactUs}
       options={{
         headerTitle: 'Contact Us',
@@ -400,14 +420,14 @@ const BottomTabNavigator = () => (
       component={HomeStackNavigator}
       options={{ headerShown: false }}
     />
-    <BottomTab.Screen 
-      name="Search" 
-      component={SearchStackNavigator} 
-      options={{ headerShown: false }} 
+    <BottomTab.Screen
+      name="Search"
+      component={SearchStackNavigator}
+      options={{ headerShown: false }}
     />
-    <BottomTab.Screen 
-      name="Add Recipe" 
-      component={AddRecipe} 
+    <BottomTab.Screen
+      name="Add Recipe"
+      component={AddRecipe}
       options={{
         headerTitle: 'Add Recipe',
         headerStyle: {
@@ -419,17 +439,17 @@ const BottomTabNavigator = () => (
           fontSize: RFValue(24),
         },
         headerTitleAlign: 'center',
-      }} 
+      }}
     />
-    <BottomTab.Screen 
-      name="Favourite Recipe" 
-      component={FavouriteStackNavigator} 
-      options={{ headerShown: false }} 
+    <BottomTab.Screen
+      name="Favourite Recipe"
+      component={FavouriteStackNavigator}
+      options={{ headerShown: false }}
     />
-    <BottomTab.Screen 
-      name="Profile" 
-      component={ProfileStackNavigator} 
-      options={{ headerShown: false }} 
+    <BottomTab.Screen
+      name="Profile"
+      component={ProfileStackNavigator}
+      options={{ headerShown: false }}
     />
   </BottomTab.Navigator>
 );
@@ -448,7 +468,7 @@ const App = () => {
   }, []);
 
   if (isLoading) {
-    return null; 
+    return null;
   }
 
   return (

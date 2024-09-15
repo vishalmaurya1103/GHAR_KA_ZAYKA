@@ -75,7 +75,7 @@ export default function Settings() {
 
                     <TouchableOpacity
                         onPress={() => {
-                            // handle onPress
+                            navigation.navigate('Location')
                         }}
                         style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#32c759' }]}>
@@ -95,7 +95,7 @@ export default function Settings() {
                             size={20} />
                     </TouchableOpacity>
 
-                    <View style={styles.row}>
+                    {/* <View style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
                             <FeatherIcon color="#fff" name="bell" size={20} />
                         </View>
@@ -108,9 +108,9 @@ export default function Settings() {
                             onValueChange={pushNotifications =>
                                 setForm({ ...form, pushNotifications })}
                             value={form.pushNotifications} />
-                    </View>
+                    </View> */}
 
-                    <View style={styles.row}>
+                    {/* <View style={styles.row}>
                         <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
                             <FeatherIcon color="#fff" name="bell" size={20} />
                         </View>
@@ -123,7 +123,7 @@ export default function Settings() {
                             onValueChange={emailNotifications =>
                                 setForm({ ...form, emailNotifications })}
                             value={form.emailNotifications} />
-                    </View>
+                    </View> */}
 
                     <TouchableOpacity
                         onPress={() => {
