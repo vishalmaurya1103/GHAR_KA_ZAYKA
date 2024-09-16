@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, ActivityIndicator, SafeAreaView, Text } from 'react-native';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { FlatList, StyleSheet, ActivityIndicator, SafeAreaView, Text, View, Alert,
+TouchableOpacity, } from 'react-native';
+import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import RecipeCard from '../../components/RecipeCard'; 
 import { Colors } from '../../constants/Colors';  
@@ -44,16 +45,59 @@ const MyRecipeScreen = ({ navigation }) => {
         fetchRecipes();
     }, [auth.currentUser]);
 
+    // Function to handle deleting a recipe with confirmation
+    const confirmDeleteRecipe = (recipeId) => {
+        Alert.alert(
+            "Delete Recipe",
+            "Are you sure you want to delete this recipe?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Deletion canceled"),
+                    style: "cancel"
+                },
+                {
+                    text: "Delete",
+                    onPress: () => handleDeleteRecipe(recipeId),
+                    style: "destructive"
+                }
+            ],
+            { cancelable: true }
+        );
+    };
+
+    // Function to handle deleting a recipe
+    const handleDeleteRecipe = async (recipeId) => {
+        try {
+            // Delete the recipe document from Firestore
+            await deleteDoc(doc(db, 'recipes', recipeId));
+
+            // Remove the deleted recipe from the local state
+            setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== recipeId));
+        } catch (e) {
+            console.error("Error deleting recipe: ", e);
+            Alert.alert("Error", "Failed to delete the recipe. Please try again.");
+        }
+    };
+
     const renderRecipe = ({ item }) => (
-        <RecipeCard
-            image={item.photo || null}  
-            title={item.title}
-            readyInMinutes={item.cookTime}
-            veryPopular={item.veryPopular}  
-            vegetarian={item.vegetarian}  
-            category={item.category}  
-            onPress={() => navigation.navigate('RecipeDetail', { recipe: item })}
-        />
+        <View style={styles.recipeCardContainer}>
+            <RecipeCard
+                image={item.photo || null}  
+                title={item.title}
+                readyInMinutes={item.cookTime}
+                veryPopular={item.veryPopular}  
+                vegetarian={item.vegetarian}  
+                category={item.category}  
+                onPress={() => navigation.navigate('RecipeDetail', { recipe: item })}
+            />
+            <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => confirmDeleteRecipe(item.id)}  // Call confirmDeleteRecipe
+            >
+                <Text style={styles.deleteButtonText}>Delete</Text>
+            </TouchableOpacity>
+        </View>
     );
 
     if (loading) {
@@ -107,6 +151,24 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         paddingBottom: 100, 
+    },
+    recipeCardContainer: {
+        marginBottom: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        elevation: 3,
+    },
+    deleteButton: {
+        marginTop: 0,
+        backgroundColor: Colors.primary,
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
 });
 

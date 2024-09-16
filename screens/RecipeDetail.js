@@ -9,7 +9,7 @@ import NutritionInfo from '../components/NutritionInfo';
 import RecipeInfoItem from '../components/RecipeInfoItem';
 import IconButton from '../components/IconButton';
 import { useFavorites } from '../context/FavoriteContext';
-import RecipeDescription from '../components/RecipeDescription';  
+import RecipeDescription from '../components/RecipeDescription';
 import { Video } from 'expo-av';
 
 const RecipeDetail = ({ route, navigation }) => {
@@ -53,6 +53,7 @@ const RecipeDetail = ({ route, navigation }) => {
       <Image source={{ uri: recipe.photo || recipe.image || '' }} style={styles.image} />
       <Text style={styles.title}>{recipe.title || 'No Title'}</Text>
 
+      {/* Recipe Information */}
       <View style={styles.infoGrid}>
         <RecipeInfoItem icon="watch-later" text={`${recipe.cookTime || recipe.readyInMinutes || 0} mins`} />
         <RecipeInfoItem icon="category" text={recipe.category || 'Unknown'} />
@@ -62,12 +63,29 @@ const RecipeDetail = ({ route, navigation }) => {
         <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} kcal`} />
       </View>
 
+      {/* Location Section */}
+      {recipe.location && (
+        <View style={styles.locationContainer}>
+          <Text style={styles.locationTitle}>
+            Location: {' '}
+            {`${recipe.location.city || ''}${recipe.location.city ? ', ' : ''}${recipe.location.state || ''}${recipe.location.state ? ', ' : ''}${recipe.location.country || ''}`}
+          </Text>
+        </View>
+      )}
+
+      {/* Recipe Description */}
       <RecipeDescription description={recipe.description || recipe.summary || 'No Description Available'} />
 
+      {/* Ingredients */}
       <IngredientsList ingredients={recipe.ingredients || recipe.extendedIngredients || []} />
+
+      {/* Instructions */}
       <InstructionsList instructions={recipe.instruction || recipe.analyzedInstructions?.[0]?.steps || []} />
+
+      {/* Nutrition Info */}
       <NutritionInfo recipe={recipe} />
 
+      {/* Recipe Video (if exists) */}
       {recipe.video && (
         <View style={styles.videoContainer}>
           <Text style={styles.videoTitle}>Recipe Video :</Text>
@@ -82,7 +100,7 @@ const RecipeDetail = ({ route, navigation }) => {
         </View>
       )}
 
-      <View style={{ marginBottom: hp('5%') }} />
+      <View style={{ marginBottom: '5%' }} />
     </ScrollView>
   );
 };
@@ -126,6 +144,23 @@ const styles = StyleSheet.create({
     height: hp('25%'),
     marginTop: hp('2%'),
     marginBottom: hp('2%'),
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: hp('1%'),
+    padding: wp('3%'),
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: wp('5%'),
+    backgroundColor: '#edf2fb',
+  },
+  locationTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  locationDetail: {
+    fontSize: 16,
   },
 });
 
