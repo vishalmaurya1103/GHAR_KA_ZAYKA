@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, ActivityIndicator, SafeAreaView, Text, View, Alert,
-TouchableOpacity, } from 'react-native';
+import { FlatList, StyleSheet, ActivityIndicator, SafeAreaView, Text, View, Alert, TouchableOpacity } from 'react-native';
 import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import RecipeCard from '../../components/RecipeCard'; 
@@ -45,7 +44,6 @@ const MyRecipeScreen = ({ navigation }) => {
         fetchRecipes();
     }, [auth.currentUser]);
 
-    // Function to handle deleting a recipe with confirmation
     const confirmDeleteRecipe = (recipeId) => {
         Alert.alert(
             "Delete Recipe",
@@ -66,13 +64,10 @@ const MyRecipeScreen = ({ navigation }) => {
         );
     };
 
-    // Function to handle deleting a recipe
     const handleDeleteRecipe = async (recipeId) => {
         try {
-            // Delete the recipe document from Firestore
             await deleteDoc(doc(db, 'recipes', recipeId));
 
-            // Remove the deleted recipe from the local state
             setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== recipeId));
         } catch (e) {
             console.error("Error deleting recipe: ", e);
@@ -93,7 +88,7 @@ const MyRecipeScreen = ({ navigation }) => {
             />
             <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => confirmDeleteRecipe(item.id)}  // Call confirmDeleteRecipe
+                onPress={() => confirmDeleteRecipe(item.id)}  
             >
                 <Text style={styles.deleteButtonText}>Delete</Text>
             </TouchableOpacity>

@@ -35,7 +35,7 @@ const ChangePassword = () => {
           style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
-          autoCapitalize="none" // Disable automatic capitalization
+          autoCapitalize="none" 
           value={email}
           onChangeText={setEmail}
         />

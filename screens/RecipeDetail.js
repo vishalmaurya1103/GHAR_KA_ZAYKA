@@ -11,6 +11,7 @@ import IconButton from '../components/IconButton';
 import { useFavorites } from '../context/FavoriteContext';
 import RecipeDescription from '../components/RecipeDescription';
 import { Video } from 'expo-av';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const RecipeDetail = ({ route, navigation }) => {
   const { recipe } = route.params || {};
@@ -62,16 +63,15 @@ const RecipeDetail = ({ route, navigation }) => {
         <RecipeInfoItem icon="people" text={`${recipe.servings || 0} servings`} />
         <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} kcal`} />
       </View>
-
-      {/* Location Section */}
-      {recipe.location && (
-        <View style={styles.locationContainer}>
-          <Text style={styles.locationTitle}>
-            Location: {' '}
-            {`${recipe.location.city || ''}${recipe.location.city ? ', ' : ''}${recipe.location.state || ''}${recipe.location.state ? ', ' : ''}${recipe.location.country || ''}`}
-          </Text>
-        </View>
-      )}
+      
+        {recipe.location && (
+          <View style={styles.locationContainer}>
+            <Icon name="location-on" size={24} color={Colors.primary} style={styles.locationIcon} />
+            <Text style={styles.locationTitle}>
+              {`${recipe.location.city || ''}${recipe.location.city ? ', ' : ''}${recipe.location.state || ''}${recipe.location.state ? ', ' : ''}${recipe.location.country || ''}`}
+            </Text>
+          </View>
+        )}
 
       {/* Recipe Description */}
       <RecipeDescription description={recipe.description || recipe.summary || 'No Description Available'} />
@@ -155,12 +155,12 @@ const styles = StyleSheet.create({
     borderRadius: wp('5%'),
     backgroundColor: '#edf2fb',
   },
+  locationIcon: {
+    marginRight: wp('2%'),
+  },
   locationTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  locationDetail: {
-    fontSize: 16,
   },
 });
 

@@ -41,11 +41,8 @@ export default function EditProfile({ navigation }) {
         const user = JSON.parse(storedUser);
         const uid = user.uid;
 
-        // Update name in Firestore
         const userDocRef = doc(db, 'users', uid);
         await updateDoc(userDocRef, { fullName: newUserName });
-
-        // Update name in AsyncStorage
         await AsyncStorage.setItem('userName', newUserName);
 
         Alert.alert('Success', 'Profile updated successfully');

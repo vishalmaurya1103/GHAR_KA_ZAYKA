@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  StyleSheet,
-  Text, 
-  Dimensions,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { Colors } from '../../constants/Colors';
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, Dimensions, TouchableOpacity, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Colors } from "../../constants/Colors";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const LocationSelection = ({ onLocationSelected }) => {
   const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
@@ -35,28 +28,29 @@ const LocationSelection = ({ onLocationSelected }) => {
 
   const loadSavedLocation = async () => {
     try {
-      const saved = await AsyncStorage.getItem('location');
+      const saved = await AsyncStorage.getItem("location");
       if (saved !== null) {
         const parsedLocation = JSON.parse(saved);
         setSavedLocation(parsedLocation);
         setCountryName(parsedLocation.country);
-        setStateName(parsedLocation.state || '');
-        setCityName(parsedLocation.city || '');
+        setStateName(parsedLocation.state || "");
+        setCityName(parsedLocation.city || "");
         setCountry(parsedLocation.country);
         setState(parsedLocation.state);
         setCity(parsedLocation.city);
       }
     } catch (error) {
-      console.error('Error loading saved location', error);
+      console.error("Error loading saved location", error);
     }
   };
 
   const fetchCountries = async () => {
     const config = {
-      method: 'get',
-      url: 'https://api.countrystatecity.in/v1/countries',
+      method: "get",
+      url: "https://api.countrystatecity.in/v1/countries",
       headers: {
-        'X-CSCAPI-KEY': 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==',
+        "X-CSCAPI-KEY":
+          "NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==",
       },
     };
 
@@ -68,16 +62,17 @@ const LocationSelection = ({ onLocationSelected }) => {
       }));
       setCountryData(countryArray);
     } catch (error) {
-      console.error('Error fetching countries:', error);
+      console.error("Error fetching countries:", error);
     }
   };
 
   const fetchStates = async (countryCode) => {
     const config = {
-      method: 'get',
+      method: "get",
       url: `https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
       headers: {
-        'X-CSCAPI-KEY': 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==',
+        "X-CSCAPI-KEY":
+          "NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==",
       },
     };
 
@@ -89,16 +84,17 @@ const LocationSelection = ({ onLocationSelected }) => {
       }));
       setStateData(stateArray);
     } catch (error) {
-      console.error('Error fetching states:', error);
+      console.error("Error fetching states:", error);
     }
   };
 
   const fetchCities = async (countryCode, stateCode) => {
     const config = {
-      method: 'get',
+      method: "get",
       url: `https://api.countrystatecity.in/v1/countries/${countryCode}/states/${stateCode}/cities`,
       headers: {
-        'X-CSCAPI-KEY': 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==',
+        "X-CSCAPI-KEY":
+          "NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==",
       },
     };
 
@@ -110,25 +106,30 @@ const LocationSelection = ({ onLocationSelected }) => {
       }));
       setCityData(cityArray);
     } catch (error) {
-      console.error('Error fetching cities:', error);
+      console.error("Error fetching cities:", error);
     }
   };
 
   const saveLocation = async () => {
     const location = {
-      country: countryName || (countryData.find(item => item.value === country)?.label || ""),
+      country:
+        countryName ||
+        countryData.find((item) => item.value === country)?.label ||
+        "",
       state: stateName || "",
-      city: cityName || ""
+      city: cityName || "",
     };
 
     try {
-      await AsyncStorage.setItem('location', JSON.stringify(location));
+      await AsyncStorage.setItem("location", JSON.stringify(location));
 
-      const stateText = location.state ? `State: ${location.state}` : "State: N/A";
+      const stateText = location.state
+        ? `State: ${location.state}`
+        : "State: N/A";
       const cityText = location.city ? `City: ${location.city}` : "City: N/A";
 
       Alert.alert(
-        'Location Saved',
+        "Location Saved",
         `Country: ${location.country}\n${stateText}\n${cityText}`
       );
 
@@ -138,7 +139,7 @@ const LocationSelection = ({ onLocationSelected }) => {
         onLocationSelected(location);
       }
     } catch (error) {
-      console.error('Error saving location', error);
+      console.error("Error saving location", error);
     }
   };
 
@@ -147,7 +148,7 @@ const LocationSelection = ({ onLocationSelected }) => {
     fetchCities(country, item.value);
     setStateName(item.label);
     setCity(null);
-    setCityName('');
+    setCityName("");
     setStateFocus(false);
   };
 
@@ -157,8 +158,8 @@ const LocationSelection = ({ onLocationSelected }) => {
     setCountryName(item.label);
     setState(null);
     setCity(null);
-    setStateName('');
-    setCityName('');
+    setStateName("");
+    setCityName("");
     setCountryFocus(false);
   };
 
@@ -167,13 +168,14 @@ const LocationSelection = ({ onLocationSelected }) => {
       {savedLocation && (
         <View style={styles.savedLocationContainer}>
           <Text style={styles.savedLocationText}>
-            Saved Location: {savedLocation.country}, {savedLocation.state || 'N/A'}, {savedLocation.city || 'N/A'}
+            Saved Location: {savedLocation.country},{" "}
+            {savedLocation.state || "N/A"}, {savedLocation.city || "N/A"}
           </Text>
         </View>
       )}
       <View style={styles.selectionContainer}>
         <Dropdown
-          style={[styles.dropdown, countryFocus && { borderColor: 'blue' }]}
+          style={[styles.dropdown, countryFocus && { borderColor: "blue" }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -183,7 +185,7 @@ const LocationSelection = ({ onLocationSelected }) => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!countryFocus ? 'Select country' : '...'}
+          placeholder={!countryFocus ? "Select country" : "..."}
           searchPlaceholder="Search..."
           value={country}
           onFocus={() => setCountryFocus(true)}
@@ -191,7 +193,7 @@ const LocationSelection = ({ onLocationSelected }) => {
           onChange={handleCountryChange}
         />
         <Dropdown
-          style={[styles.dropdown, stateFocus && { borderColor: 'blue' }]}
+          style={[styles.dropdown, stateFocus && { borderColor: "blue" }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -201,7 +203,7 @@ const LocationSelection = ({ onLocationSelected }) => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!stateFocus ? 'Select state' : '...'}
+          placeholder={!stateFocus ? "Select state" : "..."}
           searchPlaceholder="Search..."
           value={state}
           onFocus={() => setStateFocus(true)}
@@ -209,7 +211,7 @@ const LocationSelection = ({ onLocationSelected }) => {
           onChange={handleStateChange}
         />
         <Dropdown
-          style={[styles.dropdown, cityFocus && { borderColor: 'blue' }]}
+          style={[styles.dropdown, cityFocus && { borderColor: "blue" }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -219,20 +221,18 @@ const LocationSelection = ({ onLocationSelected }) => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!cityFocus ? 'Select city' : '...'}
+          placeholder={!cityFocus ? "Select city" : "..."}
           searchPlaceholder="Search..."
           value={city}
           onFocus={() => setCityFocus(true)}
           onBlur={() => setCityFocus(false)}
-          onChange={item => {
+          onChange={(item) => {
             setCity(item.value);
             setCityName(item.label);
             setCityFocus(false);
           }}
         />
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={saveLocation}>
+        <TouchableOpacity style={styles.submitButton} onPress={saveLocation}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -245,58 +245,58 @@ export default LocationSelection;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   selectionContainer: {
-    backgroundColor: '#fff',
-    padding: height * 0.025, // Responsive padding based on screen height
+    backgroundColor: "#fff",
+    padding: height * 0.025, 
     borderRadius: 15,
-    width: '90%', // Use percentage width for responsiveness
+    width: "90%", 
   },
   savedLocationContainer: {
     marginBottom: 10,
-    padding: height * 0.02, // Responsive padding
-    backgroundColor: '#fff',
+    padding: height * 0.02, 
+    backgroundColor: "#fff",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
-    width: '90%', // Responsive width
-    alignItems: 'center',
+    borderColor: "#ddd",
+    width: "90%", 
+    alignItems: "center",
   },
   savedLocationText: {
-    fontSize: width * 0.04, // Responsive font size
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: width * 0.04, 
+    fontWeight: "bold",
+    color: "#333",
   },
   dropdown: {
     height: 50,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: width * 0.03, // Responsive padding
-    marginBottom: height * 0.015, // Responsive margin
+    paddingHorizontal: width * 0.03, 
+    marginBottom: height * 0.015, 
   },
   placeholderStyle: {
-    fontSize: width * 0.04, // Responsive font size
+    fontSize: width * 0.04, 
   },
   selectedTextStyle: {
-    fontSize: width * 0.04, // Responsive font size
+    fontSize: width * 0.04, 
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: width * 0.04, // Responsive font size
+    fontSize: width * 0.04, 
   },
   submitButton: {
-    backgroundColor: Colors.primary, // Assuming Colors.primary is '#ff6347'
-    padding: height * 0.02, // Responsive padding
+    backgroundColor: Colors.primary, 
+    padding: height * 0.02, 
     borderRadius: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   submitButtonText: {
-    color: '#fff',
-    textTransform: 'uppercase',
-    fontWeight: '600',
-    fontSize: width * 0.045, // Responsive font size
+    color: "#fff",
+    textTransform: "uppercase",
+    fontWeight: "600",
+    fontSize: width * 0.045,
   },
 });

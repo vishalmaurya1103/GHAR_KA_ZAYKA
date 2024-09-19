@@ -9,7 +9,7 @@ import RNPickerSelect from "react-native-picker-select";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {db} from '../config/firebase'
@@ -35,8 +35,8 @@ export default function AddRecipeScreen() {
   const [mediaLibraryPermissionsInfo, requestMediaLibraryPermission] =
     useMediaLibraryPermissions();
 
-  const [isImageModalVisible, setIsImageModalVisible] = useState(false); // Separate modal for image
-  const [isVideoModalVisible, setIsVideoModalVisible] = useState(false); // Separate modal for video
+  const [isImageModalVisible, setIsImageModalVisible] = useState(false); 
+  const [isVideoModalVisible, setIsVideoModalVisible] = useState(false); 
   const [loading, setLoading] = useState(false);
 
   const auth = getAuth();
@@ -194,7 +194,6 @@ export default function AddRecipeScreen() {
     setLoading(true);
   
     try {
-      // Fetch location from AsyncStorage
       const location = await AsyncStorage.getItem('location');
       const parsedLocation = location ? JSON.parse(location) : null;
   
@@ -214,7 +213,7 @@ export default function AddRecipeScreen() {
         video: videoUrl,
         userId: user.uid,
         createdAt: new Date(),
-        location: parsedLocation,  // Add location to the recipe data
+        location: parsedLocation, 
       });
   
       setLoading(false);
@@ -223,7 +222,6 @@ export default function AddRecipeScreen() {
         "Your recipe has been successfully uploaded to the GHAR_KA_ZAYKA app."
       );
   
-      // Log the uploaded recipe details
       console.log("Recipe uploaded successfully.");
       console.log("Recipe Details:", {
         ...recipe,
@@ -231,7 +229,7 @@ export default function AddRecipeScreen() {
         video: videoUrl,
         userId: user.uid,
         createdAt: new Date(),
-        location: parsedLocation,  // Log location details
+        location: parsedLocation,  
       });
   
       setRecipe({
@@ -258,9 +256,6 @@ export default function AddRecipeScreen() {
     }
   }
   
-  
-  
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView contentContainerStyle={styles.container}>

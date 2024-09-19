@@ -32,6 +32,7 @@ const SearchScreen = ({ navigation }) => {
       setError(null);
 
       try {
+        // Fetch combined results from both API and Firebase
         const results = await searchRecipes(searchText);
         setRecipes(results);
       } catch (error) {

@@ -95,36 +95,6 @@ export default function Settings() {
                             size={20} />
                     </TouchableOpacity>
 
-                    {/* <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                            <FeatherIcon color="#fff" name="bell" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Push Notifications</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={pushNotifications =>
-                                setForm({ ...form, pushNotifications })}
-                            value={form.pushNotifications} />
-                    </View> */}
-
-                    {/* <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                            <FeatherIcon color="#fff" name="bell" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Email Notifications</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={emailNotifications =>
-                                setForm({ ...form, emailNotifications })}
-                            value={form.emailNotifications} />
-                    </View> */}
-
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('DeleteAccount');

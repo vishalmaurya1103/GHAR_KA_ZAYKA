@@ -3,6 +3,7 @@ import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 const BASE_URL = 'https://api.spoonacular.com/recipes';
+const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
 
 const API_KEYS = [
   'f2186ded718c4b3287c6c764535fabd0',
@@ -73,35 +74,66 @@ const getRecipesByCategory = async (tags, number = 50, retries = 3) => {
   }
 };
 
-const searchRecipes = async (query, retries = 3) => {
-  const endpoint = `${BASE_URL}/complexSearch?apiKey=${getApiKey()}&query=${query}`;
+const searchRecipes = async (queryText, location = '', retries = 3) => {
+  const endpoint = `${BASE_URL}/complexSearch?apiKey=${getApiKey()}&query=${queryText}`;
+  
   try {
     const response = await axios.get(endpoint);
-    const results = response.data.results || [];
+    const apiResults = response.data.results || [];
 
     const detailedResults = await Promise.all(
-      results.map(async (recipe) => {
+      apiResults.map(async (recipe) => {
         const detailsEndpoint = `${BASE_URL}/${recipe.id}/information?apiKey=${getApiKey()}`;
         try {
           const detailsResponse = await axios.get(detailsEndpoint);
-          return { ...recipe, ...detailsResponse.data };
+          
+          return { 
+            ...recipe, 
+            ...detailsResponse.data,
+            image: detailsResponse.data.image || null 
+          };
         } catch (error) {
           console.error(`Error fetching details for recipe ID ${recipe.id}:`, error);
-          return recipe;
+          return recipe;  
         }
       })
     );
-    return detailedResults;
+    const firebaseResults = await fetchRecipesFromFirebase(queryText);
+
+    const filteredFirebaseResults = firebaseResults
+      .filter(recipe => {
+        const matchesLocation = !location || recipe.location === location;
+        const matchesQuery = !queryText || recipe.title.toLowerCase().includes(queryText.toLowerCase()) || recipe.description.toLowerCase().includes(queryText.toLowerCase());
+        return matchesLocation && matchesQuery;
+      });
+
+    const processedFirebaseResults = filteredFirebaseResults.map((recipe) => {
+      let imageUrl = recipe.photo || recipe.image;  
+      if (!imageUrl || !isFirebaseImageUrl(imageUrl)) {
+        imageUrl = null;  
+      }
+
+      return {
+        ...recipe,
+        image: imageUrl,  
+        cookTime: parseInt(recipe.cookTime, 10) || 0,
+        servings: parseInt(recipe.servings, 10) || 0,
+        calories: parseInt(recipe.calories, 10) || 0,
+        uniqueId: recipe.id  
+      };
+    });
+
+    return [...detailedResults, ...processedFirebaseResults];
+
   } catch (error) {
     if (error.response && error.response.status === 402) {
       switchApiKey();
       await exponentialBackoff(retries);
-      return searchRecipes(query, retries - 1);
+      return searchRecipes(queryText, location, retries - 1);
     } else if (retries > 1) {
       await exponentialBackoff(retries);
-      return searchRecipes(query, retries - 1);
+      return searchRecipes(queryText, location, retries - 1);
     } else {
-      console.error(`Error searching recipes for "${query}":`, error);
       return [];
     }
   }

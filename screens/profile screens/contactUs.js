@@ -22,7 +22,7 @@ const ContactUs = () => {
         name,
         email,
         message,
-        access_key: 'a003829d-6b58-4834-adc0-43250f0b97d9'
+        access_key: '8bbdb682-a961-4a40-8585-7f4444478be2'
       }), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -63,6 +63,7 @@ const ContactUs = () => {
         keyboardType="email-address"
         value={email}
         onChangeText={text => setEmail(text)}
+        autoCapitalize="none"
       />
 
       <TextInput
