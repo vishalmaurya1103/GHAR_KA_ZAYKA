@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity, Switch} from 'react-native';
+import React from 'react';
+import {StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { Colors } from '../../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
@@ -7,12 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export default function Settings() {
-    const [form, setForm] = useState({
-        darkMode: false,
-        emailNotifications: true,
-        pushNotifications: false,
-    });
-
+   
     const navigation = useNavigation();
 
     return (
@@ -39,39 +34,6 @@ export default function Settings() {
                             name="chevron-right"
                             size={20} />
                     </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                        style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#fe9400' }]}>
-                            <FeatherIcon color="#fff" name="globe" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Language</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <FeatherIcon
-                            color="#C6C6C6"
-                            name="chevron-right"
-                            size={20} />
-                    </TouchableOpacity>
-
-                    <View style={styles.row}>
-                        <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                            <FeatherIcon color="#fff" name="moon" size={20} />
-                        </View>
-
-                        <Text style={styles.rowLabel}>Dark Mode</Text>
-
-                        <View style={styles.rowSpacer} />
-
-                        <Switch
-                            onValueChange={darkMode => setForm({ ...form, darkMode })}
-                            value={form.darkMode} />
-                    </View>
 
                     <TouchableOpacity
                         onPress={() => {

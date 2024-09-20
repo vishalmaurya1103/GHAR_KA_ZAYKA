@@ -4,7 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-import { firebase } from '../../config/firebase';
+import { auth } from '../../config/firebase'; 
+import { sendPasswordResetEmail } from 'firebase/auth'; 
 
 const ChangePassword = () => {
   const [email, setEmail] = useState('');
@@ -17,9 +18,9 @@ const ChangePassword = () => {
     }
 
     try {
-      await firebase.auth().sendPasswordResetEmail(email);
+      await sendPasswordResetEmail(auth, email); 
       Alert.alert('Success', 'Password reset email sent to your email address.');
-      setEmail(''); 
+      setEmail('');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -35,7 +36,7 @@ const ChangePassword = () => {
           style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
-          autoCapitalize="none" 
+          autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />

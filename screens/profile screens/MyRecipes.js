@@ -51,7 +51,6 @@ const MyRecipeScreen = ({ navigation }) => {
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Deletion canceled"),
                     style: "cancel"
                 },
                 {

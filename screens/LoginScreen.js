@@ -86,13 +86,13 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.signupLink}>Sign Up</Text>
         </Pressable>
       </View>
-      <Text style={styles.lineText}>─────── Log in with ───────</Text>
+      {/* <Text style={styles.lineText}>─────── Log in with ───────</Text>
       <TouchableOpacity style={styles.googleButton}>
         <View style={styles.googleButtonContainer}>
           <Image style={styles.logoImg} source={require('../assets/images/search.png')} />
           <Text style={styles.googleButtonText}>Login with Google</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

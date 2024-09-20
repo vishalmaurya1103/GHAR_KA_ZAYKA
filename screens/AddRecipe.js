@@ -190,6 +190,11 @@ export default function AddRecipeScreen() {
       Alert.alert("Error", "You must be logged in to save a recipe.");
       return;
     }
+
+    if (!recipe.photo || !recipe.title || recipe.ingredients.length === 0 || !recipe.instruction.length === 0) {
+      Alert.alert("Error", "Please fill out all required fields.");
+      return;
+    }
   
     setLoading(true);
   
@@ -221,16 +226,6 @@ export default function AddRecipeScreen() {
         "Recipe Uploaded",
         "Your recipe has been successfully uploaded to the GHAR_KA_ZAYKA app."
       );
-  
-      console.log("Recipe uploaded successfully.");
-      console.log("Recipe Details:", {
-        ...recipe,
-        photo: photoUrl,
-        video: videoUrl,
-        userId: user.uid,
-        createdAt: new Date(),
-        location: parsedLocation,  
-      });
   
       setRecipe({
         photo: null,
