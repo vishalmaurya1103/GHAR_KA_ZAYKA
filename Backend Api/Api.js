@@ -1,27 +1,21 @@
 import axios from 'axios';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { 
+  API_KEY_1, API_KEY_2, API_KEY_3, API_KEY_4, API_KEY_5, 
+  API_KEY_6, API_KEY_7, API_KEY_8, API_KEY_9, API_KEY_10,
+  API_KEY_11, API_KEY_12, API_KEY_13, API_KEY_14, API_KEY_15,
+  API_KEY_16, API_KEY_17, API_KEY_18
+} from '@env';
 
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
 
 const API_KEYS = [
-  'f2186ded718c4b3287c6c764535fabd0',
-  'db46a0798ead4fac94ae8d1b13ed264a',
-  '1ca781b35f2c49698f68f6f79c5b54ad',
-  '8d72c12c766541a7a4bd2f4b2b84307e',
-  '42e0b39d16a648479979318fdccf1a64',
-  '2e5167050da04be69e210666e4e19ff9',
-  '0b024b0ad8484fe79d4b9882e32e8e2c',
-  '9383df008ca0439ba59a26fdabe354c8',
-  'd760f383f93c4214947be0764268411a',
-  '41f0c2319b54423b9301972824f740b5',
-  'e244b1ec02d0474c89fb807a7af67a01',
-  '3af5bd672b294f6bb3c82b4a367f0d7d',
-  '2c27d41605124a169d13ff619a65c2ce',
-  'e8be6b2d649d45e394c0ce912b17b255',
-  '30c611037caa486d91910d03ec9e2c74',
-  'a8a5448eb09d410a9b06ed7da03b8235',
+  API_KEY_1, API_KEY_2, API_KEY_3, API_KEY_4, API_KEY_5,
+  API_KEY_6, API_KEY_7, API_KEY_8, API_KEY_9, API_KEY_10,
+  API_KEY_11, API_KEY_12, API_KEY_13, API_KEY_14, API_KEY_15,
+  API_KEY_16, API_KEY_17, API_KEY_18
 ];
 
 let currentApiKeyIndex = 0;
