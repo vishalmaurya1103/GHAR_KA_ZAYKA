@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { CommonActions } from '@react-navigation/native';
 
-export default function DeleteAccountScreen() {
+export default function DeleteAccountScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const handleDeleteAccount = async () => {
@@ -18,34 +18,50 @@ export default function DeleteAccountScreen() {
       return;
     }
 
-    setLoading(true);
-    try {
-      const uid = user.uid;
-      const userDocRef = doc(db, 'users', uid);
-      await deleteDoc(userDocRef);
-
-      await user.delete(); 
-
-      await AsyncStorage.removeItem('user');
-      await AsyncStorage.removeItem('userName');
-      await AsyncStorage.removeItem('email');
-
-      Alert.alert('Account Deleted', 'Your account has been successfully deleted.', [
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete your account? This action is permanent and cannot be undone.',
+      [
         {
-          text: 'OK',
-          onPress: () => {
-              CommonActions.reset({
-                index: 0, 
-                routes: [{ name: 'StartScreen' }], 
-              })       
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            setLoading(true);
+            try {
+              const uid = user.uid;
+              const userDocRef = doc(db, 'users', uid);
+              await deleteDoc(userDocRef);
+
+              await user.delete();
+
+              await AsyncStorage.removeItem('user');
+              await AsyncStorage.removeItem('userName');
+              await AsyncStorage.removeItem('email');
+
+              Alert.alert('Account Deleted', 'Your account has been successfully deleted.', [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'StartScreen' }],
+                      })
+                  },
+                },
+              ]);
+            } catch (error) {
+              Alert.alert('Deletion Error', `An error occurred: ${error.message}`);
+            } finally {
+              setLoading(false);
+            }
           },
         },
-      ]);
-    } catch (error) {
-      Alert.alert('Deletion Error', `An error occurred: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
+      ]
+    );
   };
 
   return (

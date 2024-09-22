@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Image, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { auth, signInWithEmailAndPassword, db } from '../config/firebase';
+import { auth, signInWithEmailAndPassword, db, sendPasswordResetEmail } from '../config/firebase';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from '../constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -54,6 +54,19 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
+  const forgotPassword = async () => {
+    if (!email) {
+      Alert.alert('Error', 'Please enter your email to reset the password');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert('Password Reset', 'A password reset link has been sent to your email.');
+    } catch (error) {
+      Alert.alert('Reset Error', error.message);
+    }
+  };
+
   const onSignUpPress = () => {
     navigation.navigate('SignupScreen');
   };
@@ -75,7 +88,7 @@ export default function LoginScreen({ navigation }) {
           placeholder="Password"
           secureTextEntry={true}
         />
-        <Pressable>
+        <Pressable onPress={forgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </Pressable>
         <Button onPress={loginUser} title={loading ? <ActivityIndicator color="#fff" /> : 'LOGIN'} />
