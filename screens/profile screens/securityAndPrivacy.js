@@ -22,7 +22,7 @@ const SecurityAndPrivacy = () => {
           <Text style={styles.answer}>We use advanced encryption protocols to ensure that your data is secure both in transit and at rest. Regular security audits and vulnerability assessments are conducted to maintain the highest security standards.</Text>
 
           <Text style={styles.question}>What should I do if I suspect a security issue?</Text>
-          <Text style={styles.answer}>If you suspect a security issue, please contact us immediately at security@cookpad.com. We will investigate and take appropriate actions to address the concern.</Text>
+          <Text style={styles.answer}>If you suspect a security issue, please contact us immediately at gharkazayka07@gmail.com. We will investigate and take appropriate actions to address the concern.</Text>
           
           <Text style={styles.question}>Do you offer two-factor authentication?</Text>
           <Text style={styles.answer}>Currently, we do not offer two-factor authentication. However, we are constantly reviewing our security features and will consider this option in the future.</Text>
@@ -41,7 +41,7 @@ const SecurityAndPrivacy = () => {
           <Text style={styles.answer}>Your information is used to personalize your experience, communicate with you, and improve our services. We do not sell or share your personal information with third parties except as required by law or for service improvement purposes.</Text>
           
           <Text style={styles.question}>How can I access or delete my information?</Text>
-          <Text style={styles.answer}>You can access and manage your information through your account settings. If you wish to delete your account, please contact us at support@cookpad.com and we will process your request according to our data retention policies.</Text>
+          <Text style={styles.answer}>You can access and manage your information through your account settings. If you wish to delete your account, please contact us at gharkazayka07@gmail.com and we will process your request according to our data retention policies.</Text>
         </View>
       </Collapsible>
     </ScrollView>

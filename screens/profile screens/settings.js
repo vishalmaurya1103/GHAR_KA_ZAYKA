@@ -14,7 +14,7 @@ export default function Settings() {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Preferences</Text>
+                    <Text style={styles.sectionTitle}></Text>
 
                     <TouchableOpacity
                         onPress={() => {
