@@ -41,6 +41,7 @@ export default function DeleteAccountScreen({ navigation }) {
               await AsyncStorage.removeItem('user');
               await AsyncStorage.removeItem('userName');
               await AsyncStorage.removeItem('email');
+              await AsyncStorage.removeItem('location');
 
               Alert.alert('Account Deleted', 'Your account has been successfully deleted.', [
                 {
