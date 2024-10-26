@@ -6,8 +6,6 @@ import Userinfo from "../components/Userinfo";
 import { Colors } from '../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const isFirebaseImageUrl = (url) => url && url.startsWith('https://firebasestorage.googleapis.com/');
-
 const HomeScreen = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,62 +14,29 @@ const HomeScreen = ({ navigation }) => {
     const loadRecipes = async () => {
       try {
         const categories = ['Indian', 'breakfast', 'lunch', 'dinner', 'appetizer', 'main course', 'side dish', 'dessert', 'drink'];
+        
+        // Fetch from both API and Firebase
         const [apiRecipes, firebaseRecipes] = await Promise.all([
           Promise.all(categories.map(category => getRecipesByCategory(category, 10))),
           fetchRecipesFromFirebase()
         ]);
 
+        // Consolidate recipes without duplicates
         const seenRecipeIds = new Set();
-        const combinedRecipes = [];
-
-        const addRecipe = (recipe) => {
+        const combinedRecipes = [...apiRecipes.flat(), ...firebaseRecipes].reduce((acc, recipe) => {
           if (!seenRecipeIds.has(recipe.id)) {
             seenRecipeIds.add(recipe.id);
-            combinedRecipes.push(recipe);
+            acc.push({
+              ...recipe,
+              image: recipe.photo || recipe.image || null,
+              cookTime: parseInt(recipe.readyInMinutes || recipe.cookTime, 10) || 0,
+              servings: parseInt(recipe.servings, 10) || 0,
+              calories: parseInt(recipe.calories, 10) || 0,
+              uniqueId: recipe.id,
+            });
           }
-        };
-
-        apiRecipes.flat().forEach(recipe => {
-          let imageUrl = recipe.photo || recipe.image;
-          let videoUrl = recipe.video || null;
-          if (isFirebaseImageUrl(imageUrl)) {
-            imageUrl = imageUrl;
-          } else if (!imageUrl) {
-            imageUrl = null;
-          }
-
-          const cookTime = parseInt(recipe.readyInMinutes, 10) || 0;
-          addRecipe({
-            ...recipe,
-            image: imageUrl,
-            video: videoUrl,
-            cookTime,
-            servings: parseInt(recipe.servings, 10) || 0,
-            calories: parseInt(recipe.calories, 10) || 0,
-            uniqueId: recipe.id,
-          });
-        });
-
-        firebaseRecipes.forEach(recipe => {
-          let imageUrl = recipe.photo || recipe.image;
-          let videoUrl = recipe.video || null; 
-          if (isFirebaseImageUrl(imageUrl)) {
-            imageUrl = imageUrl;
-          } else if (!imageUrl) {
-            imageUrl = null;
-          }
-
-          const cookTime = parseInt(recipe.cookTime, 10) || 0;
-          addRecipe({
-            ...recipe,
-            image: imageUrl,
-            video: videoUrl,
-            cookTime,
-            servings: parseInt(recipe.servings, 10) || 0,
-            calories: parseInt(recipe.calories, 10) || 0,
-            uniqueId: recipe.id,
-          });
-        });
+          return acc;
+        }, []);
 
         setRecipes(combinedRecipes);
       } catch (error) {
@@ -80,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
         setLoading(false);
       }
     };
+    
     loadRecipes();
   }, []);
 
@@ -107,14 +73,12 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 
-  const keyExtractor = (item) => item.uniqueId;
-
   return (
     <View style={styles.container}>
       <FlatList
         data={recipes}
         renderItem={renderRecipe}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.uniqueId}
         ListHeaderComponent={<Userinfo />}
         contentContainerStyle={styles.listContainer}
       />

@@ -61,7 +61,7 @@ const RecipeDetail = ({ route, navigation }) => {
         <RecipeInfoItem icon="local-fire-department" text={recipe.difficulty || 'Medium'} />
         <RecipeInfoItem icon="local-dining" text={recipe.diet || 'Non-Vegetarian'} />
         <RecipeInfoItem icon="people" text={`${recipe.servings || 0} servings`} />
-        <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} kcal`} />
+        <RecipeInfoItem icon="fitness-center" text={`Calories: ${recipe.calories || 0} cal`} />
       </View>
       
         {recipe.location && (
